@@ -573,8 +573,9 @@ var defaultRoster = [
 
 var defaultState = {
   group: "Ajo Contribution Group",
-  amount: 5000,
-  freq: "10-Days",
+  amount: 1000,
+  targetPayout: 100000,
+  freq: "10-Days (1k for 100k)",
   cycleDays: 10,
   round: 2, // Moyin (slot 3, 0-indexed)
   members: defaultRoster
@@ -782,11 +783,15 @@ function render(){
     if(m.checks >= 10) futureCount++;
   });
 
-  var maxPossible = n * (S.cycleDays || 10);
-  var pct = Math.min(100, Math.round((totalChecks / maxPossible) * 100));
+  var unit = S.amount || 1000;
+  var targetPayout = S.targetPayout || 100000;
+  var currentRaised = totalChecks * unit;
+  var maxChecks = n * (S.cycleDays || 10);
+  var pct = Math.min(100, Math.round((totalChecks / maxChecks) * 100));
+
   $("pb").style.width = pct + "%";
-  $("ptChecks").textContent = totalChecks + "/" + maxPossible + " total payments (" + pct + "%)";
-  $("ptSummary").textContent = clearedCount + " Cleared • " + futureCount + " Future Paid";
+  $("ptChecks").innerHTML = "<b>₦" + Number(currentRaised).toLocaleString("en-NG") + "</b> of ₦" + Number(targetPayout).toLocaleString("en-NG") + " (" + pct + "%)";
+  $("ptSummary").textContent = "₦" + Number(Math.max(0, targetPayout - currentRaised)).toLocaleString("en-NG") + " left • " + totalChecks + "/" + maxChecks + " days";
 
   // Clean Member List Rendering
   var listEl = $("list");
@@ -849,7 +854,7 @@ function render(){
 
     var countText = document.createElement("span");
     countText.className = "m-count-text";
-    countText.textContent = m.checks + "/10";
+    countText.textContent = m.checks + "/10 (₦" + Number(m.checks * 1000).toLocaleString("en-NG") + ")";
     botLine.appendChild(countText);
 
     info.appendChild(botLine);
@@ -865,7 +870,7 @@ function render(){
       m.checks++;
       saveData();
       render();
-      toast("+1 payment for " + m.name + " (" + m.checks + "/10)");
+      toast("+1 day (₦1,000) for " + m.name + " (" + m.checks + "/10)");
     };
     row.appendChild(btnPlus);
 
@@ -879,6 +884,10 @@ function render(){
 }
 
 // --- Member Sheet Controls ---
+function updateSheetAmount(checks){
+  $("sheetCheckNum").innerHTML = checks + ' <span style="font-size:13px;color:var(--pri);font-weight:600">(₦' + Number(checks * 1000).toLocaleString("en-NG") + ')</span>';
+}
+
 function openMemberSheet(idx){
   activeMemberIdx = idx;
   var m = S.members[idx];
@@ -886,7 +895,7 @@ function openMemberSheet(idx){
 
   $("sheetMemberName").textContent = (idx + 1) + ". " + m.name;
   $("sheetMemberSub").textContent = "Payout Date: " + (m.date || "Not set") + " • " + (m.cleared ? "Cleared" : "Pending");
-  $("sheetCheckNum").textContent = m.checks;
+  updateSheetAmount(m.checks);
   
   if(m.cleared){
     $("sheetClearedSwitch").classList.add("on");
@@ -907,7 +916,7 @@ $("sheetMinus").onclick = function(){
   var m = S.members[activeMemberIdx];
   if(m && m.checks > 0){
     m.checks--;
-    $("sheetCheckNum").textContent = m.checks;
+    updateSheetAmount(m.checks);
     saveData();
     render();
   }
@@ -917,7 +926,7 @@ $("sheetPlus").onclick = function(){
   var m = S.members[activeMemberIdx];
   if(m){
     m.checks++;
-    $("sheetCheckNum").textContent = m.checks;
+    updateSheetAmount(m.checks);
     saveData();
     render();
   }
@@ -947,7 +956,8 @@ $("sheetCopyReceiptBtn").onclick = function(){
     "Name: " + payer,
     "Bank: " + bank,
     "Purpose: Payment for #" + (activeMemberIdx + 1) + " (" + m.name + ")",
-    "Total checks: " + m.checks + "/10 ✅"
+    "Amount: ₦1,000 (Day " + m.checks + ")",
+    "Total Paid: ₦" + Number(m.checks * 1000).toLocaleString("en-NG") + " (" + m.checks + "/10 days) ✅"
   ].join("\n");
 
   copyText(receipt, "Receipt copied to clipboard!");
