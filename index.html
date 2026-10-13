@@ -38,6 +38,7 @@
   --err:#c53030;
   --errBg:#fee2e2;
   --gold:#d97706;
+  --goldBg:#fef3c7;
   --keypadBg:#f0f2ef;
   --keypadActive:#e2e6e2;
   box-sizing:border-box;
@@ -59,6 +60,7 @@
     --err:#f87171;
     --errBg:#3b1c1c;
     --gold:#fbbf24;
+    --goldBg:#3e2f10;
     --keypadBg:#24302a;
     --keypadActive:#2f3f37;
     color-scheme:dark;
@@ -78,13 +80,14 @@
   --err:#f87171;
   --errBg:#3b1c1c;
   --gold:#fbbf24;
+  --goldBg:#3e2f10;
   --keypadBg:#24302a;
   --keypadActive:#2f3f37;
   color-scheme:dark;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;user-select:none}
-.w{max-width:520px;margin:0 auto;padding:16px}
+.w{max-width:540px;margin:0 auto;padding:16px}
 h1{font-size:20px;margin:0;display:flex;align-items:center;gap:8px}
 .app-brand{display:flex;align-items:center;gap:8px}
 .app-logo{width:28px;height:28px;border-radius:7px;vertical-align:middle}
@@ -104,11 +107,6 @@ button.sm-btn{padding:6px 10px;font-size:13px;border-radius:8px}
 button:disabled{opacity:.4;cursor:default}
 .bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:10px 0 4px}
 .bar i{display:block;height:100%;background:var(--pri);width:0;transition:width .25s ease}
-.m{display:flex;align-items:center;gap:10px;width:100%;text-align:left;margin-bottom:8px;padding:14px;background:var(--warn);border:1px solid transparent;border-radius:12px;cursor:pointer}
-.m.paid{background:var(--ok)}
-.m .ic{font-size:20px;width:26px}
-.m .nm{flex:1;font-weight:500}
-.m .tag{font-size:12px;color:var(--mut);background:rgba(0,0,0,0.05);padding:2px 8px;border-radius:12px}
 .row{display:flex;gap:8px}
 .row>button{flex:1}
 input,textarea,select{width:100%;font:inherit;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);margin:4px 0 10px;user-select:text}
@@ -118,7 +116,40 @@ label{font-size:14px;color:var(--mut);font-weight:500}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(-2px)}
 .hide{display:none !important}
 
-/* Auth / Lock Screen Styles */
+/* Member Card Styles */
+.m-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;transition:border-color .15s}
+.m-card.active-collector{border-color:var(--pri);box-shadow:0 0 0 1px var(--pri)}
+.m-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.m-info{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.m-title{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-date{font-size:12px;color:var(--mut);font-weight:normal;margin-left:4px}
+.m-badges{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;display:inline-flex;align-items:center;gap:3px;cursor:pointer}
+.badge.cleared{background:var(--ok);color:var(--pri);border:1px solid rgba(15,123,74,0.3)}
+.badge.uncleared{background:var(--bg);color:var(--mut);border:1px solid var(--bd)}
+.badge.future{background:var(--goldBg);color:var(--gold);border:1px solid rgba(217,119,6,0.3)}
+.badge.collecting{background:var(--pri);color:var(--priTx)}
+.badge.off{background:var(--bg);color:var(--mut);border:1px solid var(--bd)}
+.m-checks-wrap{display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:8px 10px;border-radius:8px;gap:8px}
+.m-checks-str{font-size:16px;letter-spacing:1px;word-break:break-all;line-height:1.2}
+.m-checks-count{font-size:12px;font-weight:600;color:var(--mut);white-space:nowrap}
+.m-controls{display:flex;align-items:center;gap:6px}
+.btn-step{width:36px;height:36px;padding:0;border-radius:10px;font-size:18px;font-weight:600;display:inline-flex;align-items:center;justify-content:center}
+.btn-log{padding:6px 10px;font-size:13px;border-radius:10px}
+
+/* Stats Pill Grid */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.stat-pill{background:var(--bg);border-radius:10px;padding:8px;text-align:center}
+.stat-val{font-size:16px;font-weight:700;color:var(--tx)}
+.stat-lbl{font-size:11px;color:var(--mut);margin-top:2px}
+
+/* Modal Overlay */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:16px;z-index:9000;backdrop-filter:blur(2px)}
+.modal-box{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px;width:100%;max-width:440px;box-shadow:0 8px 32px rgba(0,0,0,0.2)}
+.modal-title{font-size:18px;font-weight:700;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{background:none;border:none;font-size:22px;color:var(--mut);padding:0;cursor:pointer}
+
+/* Auth / Lock Screen */
 .auth-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;text-align:center;padding:20px 10px}
 .auth-shield{width:64px;height:64px;background:var(--ok);color:var(--pri);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;box-shadow:0 2px 8px rgba(15,123,74,0.15)}
 .auth-title{font-size:22px;font-weight:700;margin:0 0 6px}
@@ -140,54 +171,47 @@ label{font-size:14px;color:var(--mut);font-weight:500}
   20%,60%{transform:translateX(-10px)}
   40%,80%{transform:translateX(10px)}
 }
-.shake{animation:shake .32s ease-in-out}
-
-/* Security Badge & Promo Banner */
-.banner{background:var(--ok);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.banner-tx{font-size:13px;color:var(--tx)}
-.banner-tx b{display:block;font-size:14px;margin-bottom:2px}
-.banner-actions{display:flex;gap:6px}
-.badge{display:inline-block;padding:3px 8px;font-size:12px;font-weight:600;border-radius:12px;background:var(--ok);color:var(--pri)}
-.badge.off{background:rgba(0,0,0,0.06);color:var(--mut)}
-.security-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}
-.security-row:last-child{border-bottom:none}
+.shake{animation:shake .35s ease}
 </style>
 </head>
 <body>
 <div class="w">
-  <!-- Top Navigation Bar -->
+  <div id="toast"></div>
+
+  <!-- TOP HEADER -->
   <div class="top">
     <div class="app-brand">
-      <img src="favicon.svg" alt="Ajo Logo" class="app-logo">
+      <img src="favicon.svg" alt="Ajo" class="app-logo">
       <h1 id="gt">Ajo Tracker</h1>
     </div>
     <div class="top-actions">
-      <button id="pwaInstall" class="sm-btn hide" title="Install App on Device">⬇ Install</button>
+      <button id="pwaInstall" class="sm-btn p hide" title="Install App to Home Screen">↓ Install</button>
       <button id="lockBtn" class="sm-btn hide" title="Lock App with PIN">🔒 Lock</button>
-      <button id="setBtn" class="sm-btn">Settings</button>
+      <button id="setBtn" class="sm-btn" title="Settings">⚙️</button>
     </div>
   </div>
 
-  <!-- Optional First-Time PIN Setup Banner -->
-  <div id="pinBanner" class="banner hide">
-    <div class="banner-tx">
-      <b>🔒 Protect with PIN</b>
-      Keep your Ajo records private with a 4-digit passcode.
-    </div>
-    <div class="banner-actions">
-      <button id="bannerSetPin" class="p sm-btn">Set PIN</button>
-      <button id="bannerDismiss" class="sm-btn sec">Later</button>
+  <!-- PIN SETUP PROMPT BANNER -->
+  <div id="pinBanner" class="card hide" style="background:var(--ok);border-color:rgba(15,123,74,0.2);padding:10px 14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <div style="font-size:13px;color:var(--tx)">
+        <b>🔐 Protect with PIN</b><br>
+        <span class="sm">Keep your Ajo records private with a 4-digit passcode.</span>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button id="bannerSetPin" class="sm-btn p">Set PIN</button>
+        <button id="bannerDismiss" class="sm-btn sec" style="padding:6px">✕</button>
+      </div>
     </div>
   </div>
 
-  <!-- AUTH LOCK SCREEN VIEW -->
-  <div id="authView" class="hide">
-    <div class="auth-wrap card">
-      <div class="auth-shield" id="authIcon">🔒</div>
+  <!-- AUTH / PASSCODE SCREEN -->
+  <div id="authView" class="auth-overlay hide">
+    <div class="auth-wrap">
+      <div class="auth-shield">🔐</div>
       <h2 class="auth-title" id="authTitle">Enter Passcode</h2>
-      <p class="auth-desc" id="authDesc">Enter your 4-digit PIN to access your Ajo records</p>
-      
-      <!-- 4 PIN Dots -->
+      <p class="auth-desc" id="authDesc">Enter your 4-digit PIN to access your records</p>
+
       <div class="pin-dots" id="pinDots">
         <div class="pin-dot"></div>
         <div class="pin-dot"></div>
@@ -195,10 +219,8 @@ label{font-size:14px;color:var(--mut);font-weight:500}
         <div class="pin-dot"></div>
       </div>
 
-      <!-- Native hidden input for hardware keyboard support -->
       <input type="password" id="hiddenPin" class="hidden-pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off">
 
-      <!-- Touch Keypad -->
       <div class="keypad">
         <button type="button" class="num-key" data-k="1">1</button>
         <button type="button" class="num-key" data-k="2">2</button>
@@ -221,21 +243,89 @@ label{font-size:14px;color:var(--mut);font-weight:500}
 
   <!-- MAIN AJO TRACKER INTERFACE -->
   <div id="main">
+    <!-- Round & Stats Overview Card -->
     <div class="card">
       <div class="rd">
         <button id="prev">&larr;</button>
-        <div style="text-align:center"><b id="rl"></b><div class="sm" id="col"></div></div>
+        <div style="text-align:center">
+          <b id="rl">Round 3</b>
+          <div class="sm" id="col">Collector: Moyin (20/10)</div>
+        </div>
         <button id="next">&rarr;</button>
       </div>
+
       <div class="bar"><i id="pb"></i></div>
-      <div class="sm" id="pt"></div>
+      <div class="sm" id="pt" style="margin-top:4px"></div>
+
+      <div class="stat-grid">
+        <div class="stat-pill">
+          <div class="stat-val" id="statCleared">2</div>
+          <div class="stat-lbl">🆑 Cleared</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-val" id="statFuture">4</div>
+          <div class="stat-lbl">🚀 Future Paid</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-val" id="statTotalChecks">55</div>
+          <div class="stat-lbl">Total Checks</div>
+        </div>
+      </div>
     </div>
+
+    <!-- Quick Action Buttons -->
+    <div class="row" style="margin-bottom:12px">
+      <button class="p" id="quickLogBtn">➕ Log Payment</button>
+      <button class="p" id="copyRosterBtn">📋 Copy WhatsApp</button>
+      <button class="sec" id="waRosterBtn">💬 WhatsApp</button>
+    </div>
+
+    <!-- Roster List -->
     <div id="list"></div>
-    <div class="row">
-      <button class="p" id="copy">Copy WhatsApp update</button>
-      <button class="p" id="wa">Send to WhatsApp</button>
+
+    <div class="card" style="margin-top:12px">
+      <div style="font-size:13px;color:var(--mut);line-height:1.5">
+        <b>💡 Quick Tips:</b><br>
+        • Tap <b>🆑</b> badge to toggle payout collection.<br>
+        • Tap <b>+</b> or <b>−</b> to add/remove payment checks for each member.<br>
+        • Tap <b>Receipt</b> on any member to log payer bank details and copy a WhatsApp confirmation.
+      </div>
     </div>
-    <p class="sm" style="margin-top:12px">Tap a name to mark paid or unpaid. Then copy or send the update once.</p>
+  </div>
+
+  <!-- PAYMENT LOG MODAL -->
+  <div id="logModal" class="modal-overlay hide">
+    <div class="modal-box">
+      <div class="modal-title">
+        <span>🧾 Log Member Payment</span>
+        <button type="button" class="modal-close" id="modalClose">✕</button>
+      </div>
+
+      <label>Member Turn / Slot</label>
+      <select id="logMemberSelect"></select>
+
+      <label>Payer Name (as on bank alert)</label>
+      <input type="text" id="logPayerName" placeholder="e.g. Adebowale Kehinde">
+
+      <div class="row">
+        <div style="flex:1">
+          <label>Bank</label>
+          <input type="text" id="logBank" placeholder="e.g. Opay, Kuda, GTB">
+        </div>
+        <div style="flex:1">
+          <label>Account Number</label>
+          <input type="text" id="logAccount" placeholder="e.g. 8069734283">
+        </div>
+      </div>
+
+      <label>Payment Note / Day</label>
+      <input type="text" id="logNote" placeholder="e.g. Payment for number 3 day 2">
+
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="p" id="saveLogBtn" style="flex:1">Save &amp; Add Check (+1)</button>
+        <button class="sec" id="copyReceiptBtn">Copy Alert Only</button>
+      </div>
+    </div>
   </div>
 
   <!-- SETTINGS VIEW -->
@@ -258,82 +348,124 @@ label{font-size:14px;color:var(--mut);font-weight:500}
         </div>
       </div>
 
-      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)" id="recoveryRow" class="hide">
-        <label>Security Word (for PIN recovery)</label>
-        <input id="secClue" placeholder="e.g. your favorite market or nickname">
-        <button class="sm-btn sec" id="saveRecoveryBtn">Save Security Word</button>
+      <div id="recoveryRow" class="hide" style="margin-top:12px;border-top:1px solid var(--bd);padding-top:12px">
+        <label>PIN Recovery Security Word</label>
+        <div style="display:flex;gap:6px">
+          <input type="text" id="secClue" placeholder="Secret word to reset forgotten PIN" style="margin:0">
+          <button class="sm-btn" id="saveRecoveryBtn">Save Word</button>
+        </div>
       </div>
     </div>
 
-    <!-- Group Configuration Card -->
+    <!-- Group Settings Form -->
     <div class="card">
-      <label>Group name</label><input id="sg" placeholder="e.g. Mama Tunde Ajo">
-      <label>Amount per person per round (&#8358;)</label><input id="sa" type="number" inputmode="numeric" placeholder="10000">
-      <label>How often</label>
-      <select id="sf"><option>Week</option><option>Month</option><option>Day</option></select>
-      <label>Members, one per line, in the order they collect. Put people who already collected at the top.</label>
-      <textarea id="sm" placeholder="Ngozi&#10;Bisi&#10;Tunde"></textarea>
-      <label>Which round are you on now? (if 3 people have already collected, this is round 4)</label>
-      <input id="sr" type="number" inputmode="numeric" min="1" placeholder="1">
-      <div class="row"><button class="p" id="save">Save</button><button id="cancel">Cancel</button></div>
+      <b>Ajo Group Settings</b>
+      <p class="sm" style="margin:4px 0 12px">Configure your thrift savings circle.</p>
+
+      <label>Group name</label>
+      <input type="text" id="sg" placeholder="e.g. Ajo Contribution Group">
+
+      <div class="row">
+        <div style="flex:1">
+          <label>Amount per contribution (₦)</label>
+          <input type="number" id="sa" placeholder="5000">
+        </div>
+        <div style="flex:1">
+          <label>Cycle / Frequency</label>
+          <input type="text" id="sf" placeholder="10-Days">
+        </div>
+      </div>
+
+      <label>Roster (One line per member). Accepts 🆑, dates, and checks directly:</label>
+      <textarea id="sm" placeholder="🆑1. Deborah 30/9✅✅✅✅✅&#10;🆑2. Akinde 10/10✅✅✅✅✅&#10;3. Moyin 20/10&#10;4. Deborah 30/10✅✅✅✅✅✅✅✅✅✅"></textarea>
+
+      <label>Active collection round (1-based index):</label>
+      <input type="number" id="sr" min="1" placeholder="3">
+
+      <div class="row" style="margin-top:12px">
+        <button class="p" id="save">Save Settings</button>
+        <button id="cancel">Cancel</button>
+      </div>
     </div>
 
-    <!-- Backup & Restore Card -->
+    <!-- Backup & Restore -->
     <div class="card">
-      <b>Backup &amp; Offline Storage</b>
-      <p class="sm">Data lives on this device. Copy a backup now and then, and paste it back to restore on another phone.</p>
-      <div class="row"><button id="bk">Copy backup</button><button id="rs">Restore</button></div>
-      <textarea id="bkt" class="hide" placeholder="Paste backup here, then tap Restore again"></textarea>
-    </div>
-
-    <!-- Reset Card -->
-    <div class="card">
-      <button id="reset" class="danger" style="width:100%">Start a new Ajo (clears everything)</button>
+      <b>Data Management</b>
+      <p class="sm" style="margin:4px 0 10px">Export or restore your contribution records.</p>
+      <div class="row">
+        <button id="bk">Copy Backup</button>
+        <button id="rs">Restore Backup</button>
+      </div>
+      <textarea id="bkt" class="hide" style="margin-top:10px" placeholder="Paste backup JSON here and tap Restore"></textarea>
+      <div style="margin-top:10px">
+        <button class="danger sm-btn" id="reset">Reset Everything</button>
+      </div>
     </div>
   </div>
 </div>
-
-<div id="toast"></div>
 
 <script>
 (function(){
 'use strict';
 
-// Storage Keys
 var KEY = "ajo-tracker-v1";
 var KEY_AUTH = "ajo-auth-v1";
 
-// State
+var defaultRoster = [
+  { id: 1, name: "Deborah", date: "30/9", checks: 5, cleared: true },
+  { id: 2, name: "Akinde", date: "10/10", checks: 5, cleared: true },
+  { id: 3, name: "Moyin", date: "20/10", checks: 2, cleared: false },
+  { id: 4, name: "Deborah", date: "30/10", checks: 10, cleared: false },
+  { id: 5, name: "Francis", date: "10/11", checks: 10, cleared: false },
+  { id: 6, name: "Taiwo", date: "20/11", checks: 10, cleared: false },
+  { id: 7, name: "Igwe", date: "30/11", checks: 3, cleared: false },
+  { id: 8, name: "Tolu", date: "10/12", checks: 0, cleared: false },
+  { id: 9, name: "Korede", date: "20/12", checks: 0, cleared: false },
+  { id: 10, name: "Ojeola", date: "30/12", checks: 10, cleared: false }
+];
+
 var defaultState = {
   group: "Ajo Contribution Group",
   amount: 5000,
-  freq: "Round",
-  members: [
-    "Deborah (30/9)",
-    "Akinde (10/10)",
-    "Moyin (20/10)",
-    "Deborah (30/10)",
-    "Francis (10/11)",
-    "Taiwo (20/11)",
-    "Igwe (30/11)",
-    "Tolu (10/12)",
-    "Korede (20/12)",
-    "Ojeola (30/12)"
-  ],
-  round: 2,
-  paid: { "2": [0, 1] }
+  freq: "10-Days",
+  cycleDays: 10,
+  round: 2, // Moyin (slot 3, 0-indexed)
+  members: defaultRoster,
+  payments: [
+    {
+      time: "2026-10-13 22:00",
+      payer: "Adebowale kehinde",
+      bank: "Opay",
+      account: "8069734283",
+      memberIdx: 2,
+      note: "Payment for number 3 day 2"
+    }
+  ]
 };
+
 var S = JSON.parse(JSON.stringify(defaultState));
 var AUTH = { enabled:false, pinHash:"", salt:"", recoveryClue:"", recoveryHash:"", bannerDismissed:false };
 
-// Auth runtime state
 var enteredPin = "";
-var authMode = "unlock"; // "unlock" | "setup_new" | "setup_confirm" | "verify_disable" | "verify_change"
+var authMode = "unlock";
 var tempNewPin = "";
 
 function $(i){ return document.getElementById(i); }
-function naira(n){ return "\u20A6" + Number(n||0).toLocaleString("en-NG"); }
-function toast(t){ var e = $("toast"); e.textContent = t; e.className = "on"; setTimeout(function(){ e.className = ""; }, 2000); }
+function naira(n){ return "₦" + Number(n||0).toLocaleString("en-NG"); }
+function toast(t){ var e = $("toast"); e.textContent = t; e.className = "on"; setTimeout(function(){ e.className = ""; }, 2200); }
+
+function copyText(text, successMsg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ toast(successMsg || "Copied to clipboard"); });
+  } else {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); toast(successMsg || "Copied to clipboard"); } catch(e){ toast("Copy failed"); }
+    document.body.removeChild(ta);
+  }
+}
 
 // --- Hashing & Crypto ---
 function generateSalt(){
@@ -351,7 +483,6 @@ async function hashStr(str, salt){
       return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
     } catch(e){}
   }
-  // Fast deterministic fallback if subtle crypto is unavailable
   var h = 0x811c9dc5;
   for (var i = 0; i < payload.length; i++) {
     h ^= payload.charCodeAt(i);
@@ -360,17 +491,64 @@ async function hashStr(str, salt){
   return "fb_" + (h >>> 0).toString(16);
 }
 
-// --- Load & Save Data ---
+// --- Data Normalization ---
+function parseMemberLine(raw, index){
+  var line = String(raw || "").trim();
+  if(!line) return { id: index + 1, name: "Member " + (index + 1), date: "", checks: 0, cleared: false };
+  var cleared = line.indexOf("🆑") > -1;
+  var checks = 0;
+  var checkMatches = line.match(/✅/g);
+  if(checkMatches) checks = checkMatches.length;
+
+  var clean = line.replace(/🆑/g, "").replace(/✅/g, "").trim();
+  clean = clean.replace(/^\d+[\.\-\s]+/, "").trim();
+  var date = "";
+  var dateMatch = clean.match(/(\d{1,2}[\/\-]\d{1,2})/);
+  if(dateMatch){
+    date = dateMatch[1];
+    clean = clean.replace(dateMatch[0], "").replace(/[\(\)]/g, "").trim();
+  }
+  clean = clean.replace(/[\.\,\s]+$/, "").trim();
+  return {
+    id: index + 1,
+    name: clean || ("Member " + (index + 1)),
+    date: date,
+    checks: checks,
+    cleared: cleared
+  };
+}
+
+function normalizeMembers(list){
+  if(!Array.isArray(list)) return [];
+  return list.map(function(m, i){
+    if(typeof m === "object" && m !== null && m.name){
+      return {
+        id: m.id || (i + 1),
+        name: String(m.name).trim(),
+        date: m.date || "",
+        checks: typeof m.checks === "number" ? m.checks : 0,
+        cleared: !!m.cleared
+      };
+    }
+    return parseMemberLine(String(m), i);
+  });
+}
+
 function loadData(){
   try {
     var r = localStorage.getItem(KEY);
     if(r){
       var parsed = JSON.parse(r);
       if(parsed && parsed.members && parsed.members.length){
-        S = Object.assign(S, parsed);
+        S = Object.assign({}, defaultState, parsed);
+        S.members = normalizeMembers(parsed.members);
       }
+    } else {
+      S = JSON.parse(JSON.stringify(defaultState));
     }
-  } catch(e){}
+  } catch(e){
+    S = JSON.parse(JSON.stringify(defaultState));
+  }
 }
 
 function saveData(){
@@ -397,36 +575,47 @@ function setSessionUnlocked(val){
   else { sessionStorage.removeItem("ajo_unlocked"); }
 }
 
-// --- Main App Logic ---
-function paidSet(){ return S.paid[S.round] || []; }
-
-function msg(){
-  var ps = paidSet(), n = S.members.length;
-  var L = ["*" + (S.group || "Ajo") + " - " + S.freq + " " + (S.round + 1) + "*"];
-  L.push("Collector: " + (S.members[S.round % Math.max(n, 1)] || "-"));
-  L.push("Amount: " + naira(S.amount) + " each", "");
+// --- WhatsApp Message Generator ---
+function buildWhatsAppRoster(){
+  var lines = [];
   S.members.forEach(function(m, i){
-    L.push((ps.indexOf(i) > -1 ? "\u2705 " : "\u23F3 ") + m);
+    var prefix = m.cleared ? "🆑" : "";
+    var num = (i + 1) + ". ";
+    var dateStr = m.date ? (" " + m.date) : "";
+    var checksStr = "✅".repeat(Math.max(0, m.checks));
+    lines.push(prefix + num + m.name + dateStr + checksStr);
   });
-  L.push("", "Paid: " + ps.length + "/" + n + " | Collected: " + naira(ps.length * S.amount));
-  return L.join("\n");
+  return lines.join("\n");
 }
 
+function buildWhatsAppFullUpdate(){
+  var cur = S.members[S.round] || S.members[0];
+  var lines = [
+    "*" + (S.group || "Ajo Tracker") + " Update* 📢",
+    "Current Collector: *" + (cur ? cur.name + (cur.date ? " (" + cur.date + ")" : "") : "-") + "*",
+    "Cycle: " + S.freq,
+    "",
+    "━━━━━━━━━━━━━━━━━━━━",
+    buildWhatsAppRoster(),
+    "━━━━━━━━━━━━━━━━━━━━"
+  ];
+  return lines.join("\n");
+}
+
+// --- Render Main View ---
 function render(){
   var n = S.members.length;
   $("gt").textContent = S.group || "Ajo Tracker";
-  
-  // Security lock button visibility
+
   if(AUTH.enabled && isSessionUnlocked()){
     $("lockBtn").classList.remove("hide");
   } else {
     $("lockBtn").classList.add("hide");
   }
 
-  // Security badge in settings
   if(AUTH.enabled){
     $("secBadge").textContent = "PIN Active";
-    $("secBadge").className = "badge";
+    $("secBadge").className = "badge cleared";
     $("pinNotSetRow").classList.add("hide");
     $("pinSetRow").classList.remove("hide");
     $("recoveryRow").classList.remove("hide");
@@ -439,90 +628,281 @@ function render(){
     $("recoveryRow").classList.add("hide");
   }
 
-  // First-time PIN setup suggestion banner
   if(!AUTH.enabled && !AUTH.bannerDismissed && n > 0){
     $("pinBanner").classList.remove("hide");
   } else {
     $("pinBanner").classList.add("hide");
   }
 
-  // If no members, show settings
   if(!n){
     $("main").classList.add("hide");
     $("set").classList.remove("hide");
     return;
   }
 
-  var ps = paidSet();
-  $("rl").textContent = S.freq + " " + (S.round + 1);
-  $("col").textContent = "Collector: " + S.members[S.round % n];
-  $("prev").disabled = S.round === 0;
-  $("pb").style.width = (ps.length / n * 100) + "%";
-  $("pt").textContent = ps.length + " of " + n + " paid | " + naira(ps.length * S.amount) + " of " + naira(n * S.amount);
-  
-  var h = $("list");
-  h.innerHTML = "";
-  S.members.forEach(function(m, i){
-    var p = ps.indexOf(i) > -1;
-    var b = document.createElement("button");
-    b.className = "m" + (p ? " paid" : "");
-    b.innerHTML = '<span class="ic">' + (p ? "\u2705" : "\u23F3") + '</span><span class="nm"></span><span class="tag">' +
-      (i === S.round % n ? "collecting" : ((S.round < n && i < S.round) || S.round >= n ? "collected" : "")) + '</span>';
-    b.querySelector(".nm").textContent = m;
-    b.onclick = function(){
-      var a = (S.paid[S.round] || []).slice();
-      var k = a.indexOf(i);
-      if(k > -1) a.splice(k, 1);
-      else a.push(i);
-      S.paid[S.round] = a;
+  // Active collector info
+  var activeIdx = Math.max(0, Math.min(S.round, n - 1));
+  var cur = S.members[activeIdx];
+  $("rl").textContent = "Round " + (activeIdx + 1);
+  $("col").textContent = "Collector: " + (cur ? cur.name + (cur.date ? " (" + cur.date + ")" : "") : "-");
+  $("prev").disabled = activeIdx === 0;
+  $("next").disabled = activeIdx >= n - 1;
+
+  // Stats calculation
+  var totalChecks = 0;
+  var clearedCount = 0;
+  var futureCount = 0;
+  S.members.forEach(function(m){
+    totalChecks += (m.checks || 0);
+    if(m.cleared) clearedCount++;
+    if(m.checks >= 10) futureCount++;
+  });
+
+  var maxPossible = n * (S.cycleDays || 10);
+  var pct = Math.min(100, Math.round((totalChecks / maxPossible) * 100));
+  $("pb").style.width = pct + "%";
+  $("pt").textContent = totalChecks + " of " + maxPossible + " total payments made (" + pct + "%) | " + naira(totalChecks * (S.amount || 0));
+  $("statCleared").textContent = clearedCount;
+  $("statFuture").textContent = futureCount;
+  $("statTotalChecks").textContent = totalChecks;
+
+  // Render Member Cards
+  var listEl = $("list");
+  listEl.innerHTML = "";
+
+  S.members.forEach(function(m, idx){
+    var card = document.createElement("div");
+    card.className = "m-card" + (idx === activeIdx ? " active-collector" : "");
+
+    // Top Row
+    var topRow = document.createElement("div");
+    topRow.className = "m-head";
+
+    var infoDiv = document.createElement("div");
+    infoDiv.className = "m-info";
+
+    // Cleared / Uncollected Toggle Badge
+    var clearBadge = document.createElement("span");
+    clearBadge.className = "badge " + (m.cleared ? "cleared" : "uncleared");
+    clearBadge.textContent = m.cleared ? "🆑 Cleared" : "⏳ Pending";
+    clearBadge.title = "Tap to toggle collection status";
+    clearBadge.onclick = function(e){
+      e.stopPropagation();
+      m.cleared = !m.cleared;
       saveData();
       render();
+      toast(m.name + (m.cleared ? " marked as cleared (collected)" : " marked pending"));
     };
-    h.appendChild(b);
+    infoDiv.appendChild(clearBadge);
+
+    var title = document.createElement("span");
+    title.className = "m-title";
+    title.innerHTML = "<b>" + (idx + 1) + ". " + m.name + "</b>" + (m.date ? '<span class="m-date">(' + m.date + ')</span>' : "");
+    infoDiv.appendChild(title);
+    topRow.appendChild(infoDiv);
+
+    // Badges (Active / Future)
+    var badgesDiv = document.createElement("div");
+    badgesDiv.className = "m-badges";
+    if(idx === activeIdx){
+      var actBadge = document.createElement("span");
+      actBadge.className = "badge collecting";
+      actBadge.textContent = "🎯 Turn";
+      badgesDiv.appendChild(actBadge);
+    }
+    if(m.checks >= 10){
+      var futBadge = document.createElement("span");
+      futBadge.className = "badge future";
+      futBadge.textContent = "🚀 Paid Future";
+      badgesDiv.appendChild(futBadge);
+    }
+    topRow.appendChild(badgesDiv);
+    card.appendChild(topRow);
+
+    // Mid Row: Checks Display
+    var checksWrap = document.createElement("div");
+    checksWrap.className = "m-checks-wrap";
+
+    var checksStr = document.createElement("div");
+    checksStr.className = "m-checks-str";
+    checksStr.textContent = m.checks > 0 ? "✅".repeat(m.checks) : "No payments logged";
+    checksWrap.appendChild(checksStr);
+
+    var checksCount = document.createElement("div");
+    checksCount.className = "m-checks-count";
+    checksCount.textContent = m.checks + " / " + (S.cycleDays || 10);
+    checksWrap.appendChild(checksCount);
+    card.appendChild(checksWrap);
+
+    // Controls Row
+    var controls = document.createElement("div");
+    controls.className = "m-controls";
+
+    var btnMinus = document.createElement("button");
+    btnMinus.className = "btn-step sec";
+    btnMinus.textContent = "−";
+    btnMinus.title = "Remove 1 check";
+    btnMinus.onclick = function(){
+      if(m.checks > 0){
+        m.checks--;
+        saveData();
+        render();
+        toast("Removed 1 check for " + m.name + " (" + m.checks + " remaining)");
+      }
+    };
+
+    var btnPlus = document.createElement("button");
+    btnPlus.className = "btn-step p";
+    btnPlus.textContent = "+";
+    btnPlus.title = "Add 1 check";
+    btnPlus.onclick = function(){
+      m.checks++;
+      saveData();
+      render();
+      toast("Added check for " + m.name + " (" + m.checks + " checks total)");
+    };
+
+    var btnLog = document.createElement("button");
+    btnLog.className = "btn-log sec";
+    btnLog.textContent = "🧾 Log Alert";
+    btnLog.onclick = function(){
+      openLogModal(idx);
+    };
+
+    controls.appendChild(btnMinus);
+    controls.appendChild(btnPlus);
+    controls.appendChild(btnLog);
+    card.appendChild(controls);
+
+    listEl.appendChild(card);
   });
 }
 
-function copyText(t, ok){
-  function fb(){
-    var a = document.createElement("textarea");
-    a.value = t;
-    document.body.appendChild(a);
-    a.select();
-    try { document.execCommand("copy"); toast(ok); } catch(e){ toast("Copy failed"); }
-    document.body.removeChild(a);
-  }
-  try {
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(t).then(function(){ toast(ok); }, fb);
-    } else { fb(); }
-  } catch(e){ fb(); }
+// --- Quick Payment Logger Modal ---
+function openLogModal(memberIdx){
+  var sel = $("logMemberSelect");
+  sel.innerHTML = "";
+  S.members.forEach(function(m, i){
+    var opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = (i + 1) + ". " + m.name + (m.date ? " (" + m.date + ")" : "") + " [" + m.checks + " checks]";
+    if(i === memberIdx) opt.selected = true;
+    sel.appendChild(opt);
+  });
+
+  var target = S.members[memberIdx] || S.members[0];
+  $("logPayerName").value = target ? target.name : "";
+  $("logBank").value = "OPay";
+  $("logAccount").value = "";
+  $("logNote").value = "Payment for number " + (memberIdx + 1) + " day " + ((target ? target.checks : 0) + 1);
+
+  $("logModal").classList.remove("hide");
 }
 
-// --- Auth PIN Logic ---
-function updateDots(err){
-  var dots = $("pinDots").children;
-  for(var i=0; i<4; i++){
-    dots[i].className = "pin-dot" + (i < enteredPin.length ? " filled" : "") + (err ? " err" : "");
-  }
+$("modalClose").onclick = function(){
+  $("logModal").classList.add("hide");
+};
+
+$("saveLogBtn").onclick = function(){
+  var idx = parseInt($("logMemberSelect").value) || 0;
+  var target = S.members[idx];
+  if(!target) return;
+
+  var payer = $("logPayerName").value.trim() || target.name;
+  var bank = $("logBank").value.trim() || "Bank";
+  var acct = $("logAccount").value.trim();
+  var note = $("logNote").value.trim();
+
+  target.checks++;
+  S.payments.push({
+    time: new Date().toISOString(),
+    payer: payer,
+    bank: bank,
+    account: acct,
+    memberIdx: idx,
+    note: note
+  });
+
+  saveData();
+  render();
+  $("logModal").classList.add("hide");
+
+  var receipt = [
+    "*PAYMENT CONFIRMATION* 🧾✅",
+    "Name: " + payer,
+    "Bank: " + bank,
+    (acct ? "Account: " + acct : ""),
+    "Purpose: " + (note || ("Payment for #" + (idx + 1))),
+    "Total checks for " + target.name + ": " + target.checks + " ✅"
+  ].filter(Boolean).join("\n");
+
+  copyText(receipt, "Payment saved (+1 check) & receipt copied to clipboard!");
+};
+
+$("copyReceiptBtn").onclick = function(){
+  var idx = parseInt($("logMemberSelect").value) || 0;
+  var target = S.members[idx];
+  var payer = $("logPayerName").value.trim() || (target ? target.name : "");
+  var bank = $("logBank").value.trim() || "Bank";
+  var acct = $("logAccount").value.trim();
+  var note = $("logNote").value.trim();
+
+  var receipt = [
+    "*PAYMENT CONFIRMATION* 🧾✅",
+    "Name: " + payer,
+    "Bank: " + bank,
+    (acct ? "Account: " + acct : ""),
+    "Purpose: " + note
+  ].filter(Boolean).join("\n");
+
+  copyText(receipt, "Receipt copied to clipboard");
+};
+
+$("quickLogBtn").onclick = function(){
+  openLogModal(S.round || 0);
+};
+
+// WhatsApp Buttons
+$("copyRosterBtn").onclick = function(){
+  copyText(buildWhatsAppFullUpdate(), "WhatsApp roster update copied!");
+};
+
+$("waRosterBtn").onclick = function(){
+  window.open("https://wa.me/?text=" + encodeURIComponent(buildWhatsAppFullUpdate()), "_blank");
+};
+
+// Round Navigation
+$("prev").onclick = function(){
+  if(S.round > 0){ S.round--; saveData(); render(); }
+};
+$("next").onclick = function(){
+  if(S.round < S.members.length - 1){ S.round++; saveData(); render(); }
+};
+
+// --- Auth Lock Screen Functions ---
+function updateDots(isError){
+  var dots = document.querySelectorAll(".pin-dot");
+  dots.forEach(function(dot, idx){
+    dot.className = "pin-dot" + (idx < enteredPin.length ? " filled" : "") + (isError ? " err" : "");
+  });
 }
 
 function shakeDots(){
+  var container = $("pinDots");
+  container.classList.add("shake");
   updateDots(true);
-  var box = $("pinDots");
-  box.classList.remove("shake");
-  void box.offsetWidth; // trigger reflow
-  box.classList.add("shake");
   setTimeout(function(){
+    container.classList.remove("shake");
     enteredPin = "";
     updateDots(false);
   }, 400);
 }
 
 function openAuth(mode){
-  authMode = mode;
+  authMode = mode || "unlock";
   enteredPin = "";
   updateDots(false);
-  
+
   $("main").classList.add("hide");
   $("set").classList.add("hide");
   $("pinBanner").classList.add("hide");
@@ -555,7 +935,6 @@ function openAuth(mode){
     $("authCancelSetupBtn").classList.remove("hide");
   }
 
-  // Attempt focus on hidden input
   try { $("hiddenPin").focus(); } catch(e){}
 }
 
@@ -657,7 +1036,6 @@ function handleKeyClear(){
   updateDots(false);
 }
 
-// Attach Keypad Listeners
 document.querySelectorAll(".num-key").forEach(function(btn){
   btn.addEventListener("click", function(){
     handleKeyInput(this.getAttribute("data-k"));
@@ -667,7 +1045,6 @@ document.querySelectorAll(".num-key").forEach(function(btn){
 $("keyBack").onclick = handleKeyBack;
 $("keyClear").onclick = handleKeyClear;
 
-// Physical / On-screen native keyboard listener
 window.addEventListener("keydown", function(e){
   if($("authView").classList.contains("hide")) return;
   if(e.key >= "0" && e.key <= "9"){
@@ -679,7 +1056,7 @@ window.addEventListener("keydown", function(e){
   }
 });
 
-// Forgot PIN / Recovery
+// Forgot PIN
 $("authForgotBtn").onclick = async function(){
   var promptMsg = "PIN Recovery:\n";
   if(AUTH.recoveryClue){
@@ -729,24 +1106,15 @@ $("authCancelSetupBtn").onclick = function(){
   }
 };
 
-// Top Bar Action Buttons
 $("lockBtn").onclick = function(){
   setSessionUnlocked(false);
   openAuth("unlock");
   toast("App locked");
 };
 
-$("btnEnablePin").onclick = function(){
-  openAuth("setup_new");
-};
-
-$("btnChangePin").onclick = function(){
-  openAuth("verify_change");
-};
-
-$("btnDisablePin").onclick = function(){
-  openAuth("verify_disable");
-};
+$("btnEnablePin").onclick = function(){ openAuth("setup_new"); };
+$("btnChangePin").onclick = function(){ openAuth("verify_change"); };
+$("btnDisablePin").onclick = function(){ openAuth("verify_disable"); };
 
 $("saveRecoveryBtn").onclick = async function(){
   var word = $("secClue").value.trim();
@@ -757,28 +1125,20 @@ $("saveRecoveryBtn").onclick = async function(){
   toast("Security word saved for recovery");
 };
 
-$("bannerSetPin").onclick = function(){
-  openAuth("setup_new");
-};
-
+$("bannerSetPin").onclick = function(){ openAuth("setup_new"); };
 $("bannerDismiss").onclick = function(){
   AUTH.bannerDismissed = true;
   saveAuth();
   $("pinBanner").classList.add("hide");
 };
 
-// WhatsApp and Navigation
-$("copy").onclick = function(){ copyText(msg(), "Copied. Paste in WhatsApp"); };
-$("wa").onclick = function(){ window.open("https://wa.me/?text=" + encodeURIComponent(msg()), "_blank"); };
-$("prev").onclick = function(){ if(S.round > 0){ S.round--; saveData(); render(); } };
-$("next").onclick = function(){ S.round++; saveData(); render(); };
-
+// --- Settings Form ---
 $("setBtn").onclick = function(){
   $("sg").value = S.group;
   $("sa").value = S.amount || "";
   $("sf").value = S.freq;
-  $("sm").value = S.members.join("\n");
-  $("sr").value = S.round + 1;
+  $("sm").value = buildWhatsAppRoster();
+  $("sr").value = (S.round || 0) + 1;
   $("main").classList.add("hide");
   $("set").classList.remove("hide");
 };
@@ -790,18 +1150,20 @@ $("cancel").onclick = function(){
 };
 
 $("save").onclick = function(){
-  var m = $("sm").value.split("\n").map(function(x){ return x.trim(); }).filter(Boolean);
-  if(!m.length){ toast("Add at least one member"); return; }
+  var rawLines = $("sm").value.split("\n").map(function(x){ return x.trim(); }).filter(Boolean);
+  if(!rawLines.length){ toast("Add at least one member"); return; }
+  
   S.group = $("sg").value.trim();
   S.amount = Number($("sa").value) || 0;
-  S.freq = $("sf").value;
-  if(m.length !== S.members.length) S.paid = {};
-  S.round = Math.max(1, parseInt($("sr").value) || 1) - 1;
-  S.members = m;
+  S.freq = $("sf").value.trim() || "10-Days";
+  S.members = normalizeMembers(rawLines);
+  S.round = Math.max(0, (parseInt($("sr").value) || 1) - 1);
+  
   saveData();
   $("set").classList.add("hide");
   $("main").classList.remove("hide");
   render();
+  toast("Settings saved!");
 };
 
 $("bk").onclick = function(){
@@ -814,11 +1176,12 @@ $("rs").onclick = function(){
   try {
     var d = JSON.parse(t.value);
     if(!d.members) throw 0;
-    S = Object.assign(S, d);
+    S = Object.assign({}, defaultState, d);
+    S.members = normalizeMembers(d.members);
     saveData();
     t.value = "";
     t.classList.add("hide");
-    toast("Restored");
+    toast("Restored successfully");
     $("set").classList.add("hide");
     $("main").classList.remove("hide");
     render();
@@ -828,17 +1191,15 @@ $("rs").onclick = function(){
 };
 
 $("reset").onclick = function(){
-  if(confirm("Clear everything and start a new Ajo?")){
-    S = { group:"", amount:0, freq:"Week", members:[], round:0, paid:{} };
+  if(confirm("Clear everything and start fresh?")){
+    S = JSON.parse(JSON.stringify(defaultState));
     saveData();
-    $("sg").value = "";
-    $("sa").value = "";
-    $("sm").value = "";
     render();
+    toast("Reset complete");
   }
 };
 
-// --- PWA Installation Support ---
+// --- PWA Installation ---
 var deferredInstallPrompt = null;
 window.addEventListener("beforeinstallprompt", function(e){
   e.preventDefault();
@@ -865,18 +1226,15 @@ window.addEventListener("appinstalled", function(){
   if(btn) btn.classList.add("hide");
 });
 
-// Register Service Worker for Offline PWA
 if("serviceWorker" in navigator){
   window.addEventListener("load", function(){
-    navigator.serviceWorker.register("./sw.js").then(function(reg){
-      // SW registered
-    }).catch(function(err){
+    navigator.serviceWorker.register("./sw.js").catch(function(err){
       console.warn("ServiceWorker registration failed:", err);
     });
   });
 }
 
-// --- App Bootstrap ---
+// Bootstrap
 loadData();
 loadAuth();
 
