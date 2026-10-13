@@ -8,170 +8,327 @@
 <!-- PWA & Mobile Web Meta Tags -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f7b4a" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121815" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0e1511" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Ajo Tracker">
 <meta name="application-name" content="Ajo Tracker">
-<meta name="description" content="Track thrift contributions, rotating savings, and Ajo rounds seamlessly offline.">
 
 <!-- Icons -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="alternate icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 
 <style>
 :root{
-  --bg:#f6f7f4;
-  --card:#fff;
-  --tx:#1b2a22;
-  --mut:#6b7a72;
-  --pri:#0f7b4a;
-  --priTx:#fff;
-  --priHover:#0c643c;
-  --ok:#e3f4ea;
-  --warn:#fff4dc;
-  --bd:#dfe5e0;
-  --err:#c53030;
-  --errBg:#fee2e2;
-  --gold:#d97706;
-  --goldBg:#fef3c7;
-  --keypadBg:#f0f2ef;
-  --keypadActive:#e2e6e2;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg: #f5f7f5;
+  --card: #ffffff;
+  --card-sub: #f8faf8;
+  --tx: #132219;
+  --mut: #687d72;
+  --mut-light: #94a39b;
+  --pri: #0f7b4a;
+  --pri-light: #e8f5ee;
+  --pri-border: #bfe5cf;
+  --pri-hover: #0c633b;
+  --bd: #e2e8e4;
+  --bd-light: #edf2ee;
+  --gold: #b45309;
+  --gold-bg: #fef3c7;
+  --gold-bd: #fde68a;
+  --err: #dc2626;
+  --keypadBg: #f0f3f1;
+  --keypadActive: #e2e8e4;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-@media (prefers-color-scheme:dark){
+@media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#121815;
-    --card:#1b2420;
-    --tx:#eaf1ec;
-    --mut:#9aaba1;
-    --pri:#2fb575;
-    --priTx:#07140d;
-    --priHover:#269e65;
-    --ok:#18352a;
-    --warn:#3a321a;
-    --bd:#2b3832;
-    --err:#f87171;
-    --errBg:#3b1c1c;
-    --gold:#fbbf24;
-    --goldBg:#3e2f10;
-    --keypadBg:#24302a;
-    --keypadActive:#2f3f37;
-    color-scheme:dark;
+    --bg: #0d1310;
+    --card: #151e18;
+    --card-sub: #1b2620;
+    --tx: #ecf3ee;
+    --mut: #8da295;
+    --mut-light: #5e7367;
+    --pri: #2fb575;
+    --pri-light: #122c1f;
+    --pri-border: #1e4531;
+    --pri-hover: #279b63;
+    --bd: #233128;
+    --bd-light: #1b2720;
+    --gold: #f59e0b;
+    --gold-bg: #35250c;
+    --gold-bd: #4a3411;
+    --err: #ef4444;
+    --keypadBg: #202d24;
+    --keypadActive: #2a3c30;
+    color-scheme: dark;
   }
 }
-:root[data-theme="dark"]{
-  --bg:#121815;
-  --card:#1b2420;
-  --tx:#eaf1ec;
-  --mut:#9aaba1;
-  --pri:#2fb575;
-  --priTx:#07140d;
-  --priHover:#269e65;
-  --ok:#18352a;
-  --warn:#3a321a;
-  --bd:#2b3832;
-  --err:#f87171;
-  --errBg:#3b1c1c;
-  --gold:#fbbf24;
-  --goldBg:#3e2f10;
-  --keypadBg:#24302a;
-  --keypadActive:#2f3f37;
-  color-scheme:dark;
-}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;user-select:none}
-.w{max-width:540px;margin:0 auto;padding:16px}
-h1{font-size:20px;margin:0;display:flex;align-items:center;gap:8px}
-.app-brand{display:flex;align-items:center;gap:8px}
-.app-logo{width:28px;height:28px;border-radius:7px;vertical-align:middle}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--tx);
+  font: 15px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+.w{max-width: 480px; margin: 0 auto; padding: 12px 12px 40px}
+
+/* Header */
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.app-brand{display:flex;align-items:center;gap:10px}
+.app-logo{width:32px;height:32px;border-radius:9px}
+.app-title{font-size:18px;font-weight:700;letter-spacing:-0.3px;margin:0}
 .top-actions{display:flex;gap:6px;align-items:center}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
-.rd{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.rd b{font-size:18px}
-.sm{color:var(--mut);font-size:14px}
-button{font:inherit;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:10px 14px;cursor:pointer;transition:background .15s,transform .08s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
-button:active:not(:disabled){transform:scale(.98)}
-button.p{background:var(--pri);color:var(--priTx);border-color:var(--pri);font-weight:600}
-button.p:hover{background:var(--priHover)}
-button.sec{background:transparent;border-color:var(--bd);color:var(--tx)}
-button.danger{color:var(--err);border-color:var(--err)}
-button.sm-btn{padding:6px 10px;font-size:13px;border-radius:8px}
-button:disabled{opacity:.4;cursor:default}
-.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:10px 0 4px}
-.bar i{display:block;height:100%;background:var(--pri);width:0;transition:width .25s ease}
-.row{display:flex;gap:8px}
-.row>button{flex:1}
-input,textarea,select{width:100%;font:inherit;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);margin:4px 0 10px;user-select:text}
-textarea{min-height:140px}
-label{font-size:14px;color:var(--mut);font-weight:500}
-#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:24px;font-size:14px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2);opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:9999}
+.icon-btn{
+  background:var(--card);
+  border:1px solid var(--bd);
+  color:var(--tx);
+  width:36px;height:36px;
+  border-radius:10px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:15px;cursor:pointer;
+  transition:all .15s ease;
+}
+.icon-btn:active{transform:scale(0.95);background:var(--bd-light)}
+
+/* Base Card */
+.card{
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+/* Round & Progress Hero Card */
+.hero-card{
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.round-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+}
+.nav-arrow{
+  width:34px;height:34px;border-radius:10px;
+  border:1px solid var(--bd);background:var(--bg);
+  color:var(--tx);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:15px;
+}
+.nav-arrow:disabled{opacity:0.3;cursor:default}
+.round-center{text-align:center}
+.round-title{font-size:17px;font-weight:700;letter-spacing:-0.2px}
+.round-collector{font-size:13px;color:var(--pri);font-weight:600;margin-top:2px}
+
+/* Progress bar */
+.progress-bar-wrap{
+  height:7px;background:var(--bd-light);
+  border-radius:99px;overflow:hidden;margin:12px 0 8px;
+}
+.progress-fill{
+  height:100%;background:var(--pri);
+  border-radius:99px;transition:width .3s ease;
+}
+.hero-sub{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:var(--mut);font-weight:500;
+}
+
+/* Quick Action Row */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+button.btn-act{
+  padding:12px 14px;border-radius:12px;font-size:14px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  border:1px solid var(--bd);background:var(--card);color:var(--tx);
+  cursor:pointer;transition:all .12s ease;
+}
+button.btn-act:active{transform:scale(0.98)}
+button.btn-act.primary{background:var(--pri);color:#fff;border-color:var(--pri)}
+button.btn-act.primary:active{background:var(--pri-hover)}
+
+/* Member List */
+.list-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin:16px 2px 8px;font-size:12px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.5px;color:var(--mut-light);
+}
+
+.m-row{
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.m-row:active{background:var(--bg);transform:scale(0.995)}
+.m-row.active-turn{
+  border-color: var(--pri);
+  background: var(--pri-light);
+}
+
+/* Member Avatar / Slot badge */
+.m-badge{
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+  background: var(--bg); color: var(--mut);
+  border: 1px solid var(--bd);
+}
+.m-badge.cleared{
+  background: var(--pri-light); color: var(--pri);
+  border-color: var(--pri-border); font-size: 15px;
+}
+.m-badge.active{
+  background: var(--pri); color: #fff;
+  border-color: var(--pri);
+}
+
+/* Member text info */
+.m-info{flex: 1; min-width: 0; overflow: hidden}
+.m-top-line{display: flex; align-items: center; gap: 6px; flex-wrap: nowrap}
+.m-name{font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis}
+.m-date{font-size: 12px; color: var(--mut); font-weight: 500; flex-shrink: 0}
+.m-bot-line{display: flex; align-items: center; gap: 8px; margin-top: 4px}
+
+/* Dot Track (10 mini pills) */
+.m-dots{display: flex; gap: 3px; align-items: center; flex-shrink: 0}
+.dot{width: 7px; height: 7px; border-radius: 50%; background: var(--bd)}
+.dot.filled{background: var(--pri)}
+.dot.gold{background: var(--gold)}
+
+.m-count-text{font-size: 11px; font-weight: 600; color: var(--mut)}
+.m-tag{
+  font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 6px; flex-shrink: 0; margin-left: auto;
+}
+.m-tag.future{background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-bd)}
+.m-tag.turn{background: var(--pri-light); color: var(--pri); border: 1px solid var(--pri-border)}
+
+/* Quick +1 Button */
+.btn-plus{
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--bg); border: 1px solid var(--bd);
+  color: var(--tx); font-size: 16px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0; transition: all .12s;
+  margin-left: 2px;
+}
+.btn-plus:active{background: var(--pri); color:#fff; border-color:var(--pri); transform: scale(0.92)}
+.btn-plus.done{background: var(--pri-light); color: var(--pri); border-color: var(--pri-border)}
+
+/* Modal / Sheet */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.45);
+  display:flex;align-items:flex-end;justify-content:center;
+  z-index:9000;backdrop-filter:blur(3px);
+  animation:fadeIn .15s ease;
+}
+@media (min-width: 520px){
+  .modal-overlay{align-items:center;padding:16px}
+}
+.sheet{
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+  padding: 20px 20px 28px;
+  width: 100%; max-width: 480px;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
+  animation:slideUp .2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (min-width: 520px){
+  .sheet{border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,0.2)}
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+.sheet-handle{width:36px;height:4px;background:var(--bd);border-radius:99px;margin:0 auto 14px}
+.sheet-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.sheet-title{font-size:18px;font-weight:700}
+.sheet-close{background:none;border:none;font-size:20px;color:var(--mut);cursor:pointer;padding:4px}
+
+/* Stepper inside sheet */
+.stepper{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg);border-radius:14px;padding:10px 14px;margin-bottom:16px;
+}
+.step-btn{
+  width:40px;height:40px;border-radius:10px;
+  background:var(--card);border:1px solid var(--bd);
+  font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--tx);
+}
+.step-btn:active{transform:scale(0.92);background:var(--pri);color:#fff}
+.step-val{text-align:center}
+.step-num{font-size:20px;font-weight:700}
+.step-lbl{font-size:12px;color:var(--mut)}
+
+.toggle-row{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--bg);border-radius:14px;padding:12px 14px;margin-bottom:16px;
+}
+.switch{
+  width:46px;height:26px;background:var(--bd);border-radius:99px;
+  position:relative;cursor:pointer;transition:background .2s;
+}
+.switch.on{background:var(--pri)}
+.switch-dot{
+  width:20px;height:20px;background:#fff;border-radius:50%;
+  position:absolute;top:3px;left:3px;transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,0.2);
+}
+.switch.on .switch-dot{transform:translateX(20px)}
+
+/* Form inputs */
+input,textarea,select{
+  width:100%;font:inherit;padding:10px 12px;border:1px solid var(--bd);
+  border-radius:10px;background:var(--bg);color:var(--tx);margin:4px 0 10px;
+}
+textarea{min-height:120px}
+label{font-size:13px;color:var(--mut);font-weight:500}
+
+/* Toast */
+#toast{
+  position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  transform:translateX(-50%);background:var(--tx);color:var(--bg);
+  padding:10px 18px;border-radius:24px;font-size:13px;font-weight:500;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);opacity:0;transition:all .2s;
+  pointer-events:none;z-index:9999;
+}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(-2px)}
 .hide{display:none !important}
 
-/* Member Card Styles */
-.m-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;transition:border-color .15s}
-.m-card.active-collector{border-color:var(--pri);box-shadow:0 0 0 1px var(--pri)}
-.m-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.m-info{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
-.m-title{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.m-date{font-size:12px;color:var(--mut);font-weight:normal;margin-left:4px}
-.m-badges{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
-.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;display:inline-flex;align-items:center;gap:3px;cursor:pointer}
-.badge.cleared{background:var(--ok);color:var(--pri);border:1px solid rgba(15,123,74,0.3)}
-.badge.uncleared{background:var(--bg);color:var(--mut);border:1px solid var(--bd)}
-.badge.future{background:var(--goldBg);color:var(--gold);border:1px solid rgba(217,119,6,0.3)}
-.badge.collecting{background:var(--pri);color:var(--priTx)}
-.badge.off{background:var(--bg);color:var(--mut);border:1px solid var(--bd)}
-.m-checks-wrap{display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:8px 10px;border-radius:8px;gap:8px}
-.m-checks-str{font-size:16px;letter-spacing:1px;word-break:break-all;line-height:1.2}
-.m-checks-count{font-size:12px;font-weight:600;color:var(--mut);white-space:nowrap}
-.m-controls{display:flex;align-items:center;gap:6px}
-.btn-step{width:36px;height:36px;padding:0;border-radius:10px;font-size:18px;font-weight:600;display:inline-flex;align-items:center;justify-content:center}
-.btn-log{padding:6px 10px;font-size:13px;border-radius:10px}
-
-/* Stats Pill Grid */
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
-.stat-pill{background:var(--bg);border-radius:10px;padding:8px;text-align:center}
-.stat-val{font-size:16px;font-weight:700;color:var(--tx)}
-.stat-lbl{font-size:11px;color:var(--mut);margin-top:2px}
-
-/* Modal Overlay */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:16px;z-index:9000;backdrop-filter:blur(2px)}
-.modal-box{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px;width:100%;max-width:440px;box-shadow:0 8px 32px rgba(0,0,0,0.2)}
-.modal-title{font-size:18px;font-weight:700;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}
-.modal-close{background:none;border:none;font-size:22px;color:var(--mut);padding:0;cursor:pointer}
-
 /* Auth / Lock Screen */
-.auth-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;text-align:center;padding:20px 10px}
-.auth-shield{width:64px;height:64px;background:var(--ok);color:var(--pri);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;box-shadow:0 2px 8px rgba(15,123,74,0.15)}
-.auth-title{font-size:22px;font-weight:700;margin:0 0 6px}
-.auth-desc{color:var(--mut);font-size:14px;max-width:280px;margin:0 auto 24px}
-.pin-dots{display:flex;justify-content:center;gap:16px;margin:16px 0 28px}
-.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--bd);background:transparent;transition:all .15s cubic-bezier(0.4, 0, 0.2, 1)}
-.pin-dot.filled{background:var(--pri);border-color:var(--pri);transform:scale(1.15)}
+.auth-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:75vh;text-align:center;padding:20px 10px}
+.auth-shield{width:56px;height:56px;background:var(--pri-light);color:var(--pri);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 14px}
+.auth-title{font-size:20px;font-weight:700;margin:0 0 6px}
+.auth-desc{color:var(--mut);font-size:13px;max-width:260px;margin:0 auto 20px}
+.pin-dots{display:flex;justify-content:center;gap:14px;margin:12px 0 24px}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--bd);background:transparent;transition:all .15s}
+.pin-dot.filled{background:var(--pri);border-color:var(--pri);transform:scale(1.2)}
 .pin-dot.err{background:var(--err);border-color:var(--err)}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:290px;margin:0 auto}
-.keypad button{height:60px;font-size:22px;font-weight:600;border-radius:18px;background:var(--keypadBg);border:1px solid transparent;color:var(--tx);transition:background .1s,transform .08s}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:270px;margin:0 auto}
+.keypad button{height:54px;font-size:20px;font-weight:600;border-radius:16px;background:var(--keypadBg);border:1px solid transparent;color:var(--tx)}
 .keypad button:active{background:var(--keypadActive);transform:scale(.95)}
-.keypad button.key-action{font-size:16px;font-weight:500;color:var(--mut)}
-.auth-sublink{margin-top:20px;background:none;border:none;color:var(--mut);font-size:14px;cursor:pointer;padding:8px 12px;text-decoration:underline}
-.auth-sublink:hover{color:var(--tx)}
+.keypad button.key-action{font-size:15px;font-weight:500;color:var(--mut)}
+.auth-sublink{margin-top:16px;background:none;border:none;color:var(--mut);font-size:13px;cursor:pointer;text-decoration:underline}
 .hidden-pin-input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
 
-@keyframes shake{
-  0%,100%{transform:translateX(0)}
-  20%,60%{transform:translateX(-10px)}
-  40%,80%{transform:translateX(10px)}
-}
-.shake{animation:shake .35s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.shake{animation:shake .3s ease}
 </style>
 </head>
 <body>
@@ -182,25 +339,25 @@ label{font-size:14px;color:var(--mut);font-weight:500}
   <div class="top">
     <div class="app-brand">
       <img src="favicon.svg" alt="Ajo" class="app-logo">
-      <h1 id="gt">Ajo Tracker</h1>
+      <h1 class="app-title" id="gt">Ajo Tracker</h1>
     </div>
     <div class="top-actions">
-      <button id="pwaInstall" class="sm-btn p hide" title="Install App to Home Screen">↓ Install</button>
-      <button id="lockBtn" class="sm-btn hide" title="Lock App with PIN">🔒 Lock</button>
-      <button id="setBtn" class="sm-btn" title="Settings">⚙️</button>
+      <button id="pwaInstall" class="icon-btn hide" title="Install App">↓</button>
+      <button id="lockBtn" class="icon-btn hide" title="Lock App">🔒</button>
+      <button id="setBtn" class="icon-btn" title="Settings">⚙️</button>
     </div>
   </div>
 
   <!-- PIN SETUP PROMPT BANNER -->
-  <div id="pinBanner" class="card hide" style="background:var(--ok);border-color:rgba(15,123,74,0.2);padding:10px 14px">
+  <div id="pinBanner" class="card hide" style="background:var(--pri-light);border-color:var(--pri-border);padding:12px 14px">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
       <div style="font-size:13px;color:var(--tx)">
         <b>🔐 Protect with PIN</b><br>
-        <span class="sm">Keep your Ajo records private with a 4-digit passcode.</span>
+        <span style="font-size:12px;color:var(--mut)">Lock your savings records against unauthorized access.</span>
       </div>
       <div style="display:flex;gap:6px">
-        <button id="bannerSetPin" class="sm-btn p">Set PIN</button>
-        <button id="bannerDismiss" class="sm-btn sec" style="padding:6px">✕</button>
+        <button id="bannerSetPin" class="icon-btn" style="width:auto;padding:0 10px;font-size:12px;background:var(--pri);color:#fff;border-color:var(--pri)">Set</button>
+        <button id="bannerDismiss" class="icon-btn" style="width:30px;height:30px;font-size:12px">✕</button>
       </div>
     </div>
   </div>
@@ -231,7 +388,7 @@ label{font-size:14px;color:var(--mut);font-weight:500}
         <button type="button" class="num-key" data-k="7">7</button>
         <button type="button" class="num-key" data-k="8">8</button>
         <button type="button" class="num-key" data-k="9">9</button>
-        <button type="button" class="key-action" id="keyClear">Clear</button>
+        <button type="button" class="key-action" id="keyClear">C</button>
         <button type="button" class="num-key" data-k="0">0</button>
         <button type="button" class="key-action" id="keyBack">⌫</button>
       </div>
@@ -243,163 +400,153 @@ label{font-size:14px;color:var(--mut);font-weight:500}
 
   <!-- MAIN AJO TRACKER INTERFACE -->
   <div id="main">
-    <!-- Round & Stats Overview Card -->
-    <div class="card">
-      <div class="rd">
-        <button id="prev">&larr;</button>
-        <div style="text-align:center">
-          <b id="rl">Round 3</b>
-          <div class="sm" id="col">Collector: Moyin (20/10)</div>
+    <!-- Hero Round Card -->
+    <div class="hero-card">
+      <div class="round-nav">
+        <button class="nav-arrow" id="prev">&larr;</button>
+        <div class="round-center">
+          <div class="round-title" id="rl">Round 3</div>
+          <div class="round-collector" id="col">Collector: Moyin (20/10)</div>
         </div>
-        <button id="next">&rarr;</button>
+        <button class="nav-arrow" id="next">&rarr;</button>
       </div>
 
-      <div class="bar"><i id="pb"></i></div>
-      <div class="sm" id="pt" style="margin-top:4px"></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-fill" id="pb"></div>
+      </div>
 
-      <div class="stat-grid">
-        <div class="stat-pill">
-          <div class="stat-val" id="statCleared">2</div>
-          <div class="stat-lbl">🆑 Cleared</div>
-        </div>
-        <div class="stat-pill">
-          <div class="stat-val" id="statFuture">4</div>
-          <div class="stat-lbl">🚀 Future Paid</div>
-        </div>
-        <div class="stat-pill">
-          <div class="stat-val" id="statTotalChecks">55</div>
-          <div class="stat-lbl">Total Checks</div>
-        </div>
+      <div class="hero-sub">
+        <span id="ptChecks">55/100 payments</span>
+        <span id="ptSummary">2 Cleared • 4 Future Paid</span>
       </div>
     </div>
 
-    <!-- Quick Action Buttons -->
-    <div class="row" style="margin-bottom:12px">
-      <button class="p" id="quickLogBtn">➕ Log Payment</button>
-      <button class="p" id="copyRosterBtn">📋 Copy WhatsApp</button>
-      <button class="sec" id="waRosterBtn">💬 WhatsApp</button>
+    <!-- Quick Action Grid -->
+    <div class="action-grid">
+      <button class="btn-act primary" id="copyRosterBtn">
+        <span>📋</span> Copy WhatsApp
+      </button>
+      <button class="btn-act" id="waRosterBtn">
+        <span>💬</span> WhatsApp Direct
+      </button>
     </div>
 
-    <!-- Roster List -->
+    <!-- Roster Section Header -->
+    <div class="list-header">
+      <span>Members &amp; Payout Dates</span>
+      <span id="totalMembersCount">10 Members</span>
+    </div>
+
+    <!-- Clean Member List -->
     <div id="list"></div>
-
-    <div class="card" style="margin-top:12px">
-      <div style="font-size:13px;color:var(--mut);line-height:1.5">
-        <b>💡 Quick Tips:</b><br>
-        • Tap <b>🆑</b> badge to toggle payout collection.<br>
-        • Tap <b>+</b> or <b>−</b> to add/remove payment checks for each member.<br>
-        • Tap <b>Receipt</b> on any member to log payer bank details and copy a WhatsApp confirmation.
-      </div>
-    </div>
   </div>
 
-  <!-- PAYMENT LOG MODAL -->
-  <div id="logModal" class="modal-overlay hide">
-    <div class="modal-box">
-      <div class="modal-title">
-        <span>🧾 Log Member Payment</span>
-        <button type="button" class="modal-close" id="modalClose">✕</button>
+  <!-- MEMBER BOTTOM SHEET / EDIT MODAL -->
+  <div id="memberSheet" class="modal-overlay hide">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div>
+          <div class="sheet-title" id="sheetMemberName">Member</div>
+          <div style="font-size:13px;color:var(--mut)" id="sheetMemberSub">Payout Date: 20/10</div>
+        </div>
+        <button type="button" class="sheet-close" id="sheetClose">✕</button>
       </div>
 
-      <label>Member Turn / Slot</label>
-      <select id="logMemberSelect"></select>
-
-      <label>Payer Name (as on bank alert)</label>
-      <input type="text" id="logPayerName" placeholder="e.g. Adebowale Kehinde">
-
-      <div class="row">
-        <div style="flex:1">
-          <label>Bank</label>
-          <input type="text" id="logBank" placeholder="e.g. Opay, Kuda, GTB">
+      <!-- Payment Stepper -->
+      <div class="stepper">
+        <button type="button" class="step-btn" id="sheetMinus">−</button>
+        <div class="step-val">
+          <div class="step-num" id="sheetCheckNum">2</div>
+          <div class="step-lbl">Contributions Paid</div>
         </div>
-        <div style="flex:1">
-          <label>Account Number</label>
-          <input type="text" id="logAccount" placeholder="e.g. 8069734283">
+        <button type="button" class="step-btn" id="sheetPlus">+</button>
+      </div>
+
+      <!-- Cleared / Collected Switch -->
+      <div class="toggle-row">
+        <div>
+          <div style="font-weight:600;font-size:14px">🆑 Payout Collected</div>
+          <div style="font-size:12px;color:var(--mut)">Mark when member collects lump sum</div>
+        </div>
+        <div class="switch" id="sheetClearedSwitch">
+          <div class="switch-dot"></div>
         </div>
       </div>
 
-      <label>Payment Note / Day</label>
-      <input type="text" id="logNote" placeholder="e.g. Payment for number 3 day 2">
-
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button class="p" id="saveLogBtn" style="flex:1">Save &amp; Add Check (+1)</button>
-        <button class="sec" id="copyReceiptBtn">Copy Alert Only</button>
+      <!-- Quick Bank Alert Logger -->
+      <div style="margin-top:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--mut);margin-bottom:6px">Log Bank Alert Receipt</div>
+        <div style="display:flex;gap:6px">
+          <input type="text" id="sheetPayerName" placeholder="Payer Name (e.g. Adebowale Kehinde)" style="margin:0">
+          <input type="text" id="sheetBank" placeholder="Bank (OPay)" style="width:100px;margin:0">
+        </div>
+        <button class="btn-act" id="sheetCopyReceiptBtn" style="width:100%;margin-top:8px;font-size:13px;padding:9px">
+          Copy Payment Receipt
+        </button>
       </div>
     </div>
   </div>
 
   <!-- SETTINGS VIEW -->
   <div id="set" class="hide">
-    <!-- Security & PIN Management Card -->
+    <!-- Security Card -->
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <b>Security &amp; Auth</b>
-        <span id="secBadge" class="badge">PIN Off</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <b>Security &amp; PIN</b>
+        <span id="secBadge" class="m-tag" style="background:var(--bg)">PIN Off</span>
       </div>
-      <p class="sm" style="margin:0 0 10px">Secure this device with a 4-digit PIN so others cannot modify or view contributions without authorization.</p>
+      <p class="sm" style="margin:0 0 10px">Secure records on this device with a 4-digit PIN.</p>
       
       <div id="pinActions">
         <div class="row" id="pinNotSetRow">
-          <button class="p" id="btnEnablePin">Set Up 4-Digit PIN</button>
+          <button class="btn-act primary" id="btnEnablePin" style="width:100%">Set Up 4-Digit PIN</button>
         </div>
-        <div class="row hide" id="pinSetRow">
-          <button id="btnChangePin">Change PIN</button>
-          <button class="danger" id="btnDisablePin">Disable PIN</button>
+        <div class="row hide" id="pinSetRow" style="display:flex;gap:8px">
+          <button class="btn-act" id="btnChangePin" style="flex:1">Change PIN</button>
+          <button class="btn-act" id="btnDisablePin" style="flex:1;color:var(--err)">Disable PIN</button>
         </div>
       </div>
 
-      <div id="recoveryRow" class="hide" style="margin-top:12px;border-top:1px solid var(--bd);padding-top:12px">
-        <label>PIN Recovery Security Word</label>
+      <div id="recoveryRow" class="hide" style="margin-top:12px;border-top:1px solid var(--bd);padding-top:10px">
+        <label>Recovery Security Word</label>
         <div style="display:flex;gap:6px">
-          <input type="text" id="secClue" placeholder="Secret word to reset forgotten PIN" style="margin:0">
-          <button class="sm-btn" id="saveRecoveryBtn">Save Word</button>
+          <input type="text" id="secClue" placeholder="Secret word to reset PIN" style="margin:0">
+          <button class="btn-act" id="saveRecoveryBtn" style="padding:0 12px">Save</button>
         </div>
       </div>
     </div>
 
     <!-- Group Settings Form -->
     <div class="card">
-      <b>Ajo Group Settings</b>
-      <p class="sm" style="margin:4px 0 12px">Configure your thrift savings circle.</p>
+      <b>Group Settings</b>
+      <p class="sm" style="margin:4px 0 10px">Paste or edit your WhatsApp roster directly:</p>
 
-      <label>Group name</label>
-      <input type="text" id="sg" placeholder="e.g. Ajo Contribution Group">
+      <label>Group Name</label>
+      <input type="text" id="sg" placeholder="Ajo Contribution Group">
 
-      <div class="row">
-        <div style="flex:1">
-          <label>Amount per contribution (₦)</label>
-          <input type="number" id="sa" placeholder="5000">
-        </div>
-        <div style="flex:1">
-          <label>Cycle / Frequency</label>
-          <input type="text" id="sf" placeholder="10-Days">
-        </div>
-      </div>
+      <label>Paste Roster (one per line):</label>
+      <textarea id="sm" placeholder="🆑1. Deborah 30/9✅✅✅✅✅&#10;🆑2. Akinde 10/10✅✅✅✅✅&#10;3. Moyin 20/10✅✅"></textarea>
 
-      <label>Roster (One line per member). Accepts 🆑, dates, and checks directly:</label>
-      <textarea id="sm" placeholder="🆑1. Deborah 30/9✅✅✅✅✅&#10;🆑2. Akinde 10/10✅✅✅✅✅&#10;3. Moyin 20/10&#10;4. Deborah 30/10✅✅✅✅✅✅✅✅✅✅"></textarea>
-
-      <label>Active collection round (1-based index):</label>
+      <label>Active Collection Round (1-10):</label>
       <input type="number" id="sr" min="1" placeholder="3">
 
-      <div class="row" style="margin-top:12px">
-        <button class="p" id="save">Save Settings</button>
-        <button id="cancel">Cancel</button>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn-act primary" id="save" style="flex:1">Save Roster</button>
+        <button class="btn-act" id="cancel" style="flex:1">Cancel</button>
       </div>
     </div>
 
     <!-- Backup & Restore -->
     <div class="card">
       <b>Data Management</b>
-      <p class="sm" style="margin:4px 0 10px">Export or restore your contribution records.</p>
-      <div class="row">
-        <button id="bk">Copy Backup</button>
-        <button id="rs">Restore Backup</button>
+      <p class="sm" style="margin:4px 0 8px">Export or restore backup JSON.</p>
+      <div style="display:flex;gap:8px">
+        <button class="btn-act" id="bk" style="flex:1">Copy Backup</button>
+        <button class="btn-act" id="rs" style="flex:1">Restore</button>
       </div>
-      <textarea id="bkt" class="hide" style="margin-top:10px" placeholder="Paste backup JSON here and tap Restore"></textarea>
-      <div style="margin-top:10px">
-        <button class="danger sm-btn" id="reset">Reset Everything</button>
-      </div>
+      <textarea id="bkt" class="hide" style="margin-top:10px" placeholder="Paste backup JSON here and click Restore"></textarea>
+      <button class="btn-act" id="reset" style="margin-top:10px;width:100%;color:var(--err)">Reset All Data</button>
     </div>
   </div>
 </div>
@@ -430,17 +577,7 @@ var defaultState = {
   freq: "10-Days",
   cycleDays: 10,
   round: 2, // Moyin (slot 3, 0-indexed)
-  members: defaultRoster,
-  payments: [
-    {
-      time: "2026-10-13 22:00",
-      payer: "Adebowale kehinde",
-      bank: "Opay",
-      account: "8069734283",
-      memberIdx: 2,
-      note: "Payment for number 3 day 2"
-    }
-  ]
+  members: defaultRoster
 };
 
 var S = JSON.parse(JSON.stringify(defaultState));
@@ -449,9 +586,9 @@ var AUTH = { enabled:false, pinHash:"", salt:"", recoveryClue:"", recoveryHash:"
 var enteredPin = "";
 var authMode = "unlock";
 var tempNewPin = "";
+var activeMemberIdx = 0;
 
 function $(i){ return document.getElementById(i); }
-function naira(n){ return "₦" + Number(n||0).toLocaleString("en-NG"); }
 function toast(t){ var e = $("toast"); e.textContent = t; e.className = "on"; setTimeout(function(){ e.className = ""; }, 2200); }
 
 function copyText(text, successMsg){
@@ -491,7 +628,7 @@ async function hashStr(str, salt){
   return "fb_" + (h >>> 0).toString(16);
 }
 
-// --- Data Normalization ---
+// --- Parse & Normalize ---
 function parseMemberLine(raw, index){
   var line = String(raw || "").trim();
   if(!line) return { id: index + 1, name: "Member " + (index + 1), date: "", checks: 0, cleared: false };
@@ -575,7 +712,7 @@ function setSessionUnlocked(val){
   else { sessionStorage.removeItem("ajo_unlocked"); }
 }
 
-// --- WhatsApp Message Generator ---
+// --- WhatsApp Message Output ---
 function buildWhatsAppRoster(){
   var lines = [];
   S.members.forEach(function(m, i){
@@ -588,24 +725,11 @@ function buildWhatsAppRoster(){
   return lines.join("\n");
 }
 
-function buildWhatsAppFullUpdate(){
-  var cur = S.members[S.round] || S.members[0];
-  var lines = [
-    "*" + (S.group || "Ajo Tracker") + " Update* 📢",
-    "Current Collector: *" + (cur ? cur.name + (cur.date ? " (" + cur.date + ")" : "") : "-") + "*",
-    "Cycle: " + S.freq,
-    "",
-    "━━━━━━━━━━━━━━━━━━━━",
-    buildWhatsAppRoster(),
-    "━━━━━━━━━━━━━━━━━━━━"
-  ];
-  return lines.join("\n");
-}
-
-// --- Render Main View ---
+// --- Render View ---
 function render(){
   var n = S.members.length;
   $("gt").textContent = S.group || "Ajo Tracker";
+  $("totalMembersCount").textContent = n + " Members";
 
   if(AUTH.enabled && isSessionUnlocked()){
     $("lockBtn").classList.remove("hide");
@@ -615,14 +739,14 @@ function render(){
 
   if(AUTH.enabled){
     $("secBadge").textContent = "PIN Active";
-    $("secBadge").className = "badge cleared";
+    $("secBadge").style.color = "var(--pri)";
     $("pinNotSetRow").classList.add("hide");
     $("pinSetRow").classList.remove("hide");
     $("recoveryRow").classList.remove("hide");
     $("secClue").value = AUTH.recoveryClue || "";
   } else {
     $("secBadge").textContent = "PIN Off";
-    $("secBadge").className = "badge off";
+    $("secBadge").style.color = "var(--mut)";
     $("pinNotSetRow").classList.remove("hide");
     $("pinSetRow").classList.add("hide");
     $("recoveryRow").classList.add("hide");
@@ -640,7 +764,7 @@ function render(){
     return;
   }
 
-  // Active collector info
+  // Active round collector
   var activeIdx = Math.max(0, Math.min(S.round, n - 1));
   var cur = S.members[activeIdx];
   $("rl").textContent = "Round " + (activeIdx + 1);
@@ -648,7 +772,7 @@ function render(){
   $("prev").disabled = activeIdx === 0;
   $("next").disabled = activeIdx >= n - 1;
 
-  // Stats calculation
+  // Stats
   var totalChecks = 0;
   var clearedCount = 0;
   var futureCount = 0;
@@ -661,214 +785,181 @@ function render(){
   var maxPossible = n * (S.cycleDays || 10);
   var pct = Math.min(100, Math.round((totalChecks / maxPossible) * 100));
   $("pb").style.width = pct + "%";
-  $("pt").textContent = totalChecks + " of " + maxPossible + " total payments made (" + pct + "%) | " + naira(totalChecks * (S.amount || 0));
-  $("statCleared").textContent = clearedCount;
-  $("statFuture").textContent = futureCount;
-  $("statTotalChecks").textContent = totalChecks;
+  $("ptChecks").textContent = totalChecks + "/" + maxPossible + " total payments (" + pct + "%)";
+  $("ptSummary").textContent = clearedCount + " Cleared • " + futureCount + " Future Paid";
 
-  // Render Member Cards
+  // Clean Member List Rendering
   var listEl = $("list");
   listEl.innerHTML = "";
 
   S.members.forEach(function(m, idx){
-    var card = document.createElement("div");
-    card.className = "m-card" + (idx === activeIdx ? " active-collector" : "");
+    var row = document.createElement("div");
+    row.className = "m-row" + (idx === activeIdx ? " active-turn" : "");
 
-    // Top Row
-    var topRow = document.createElement("div");
-    topRow.className = "m-head";
+    // Avatar / Icon
+    var badge = document.createElement("div");
+    badge.className = "m-badge" + (m.cleared ? " cleared" : (idx === activeIdx ? " active" : ""));
+    badge.textContent = m.cleared ? "🆑" : (idx + 1);
+    row.appendChild(badge);
 
-    var infoDiv = document.createElement("div");
-    infoDiv.className = "m-info";
+    // Member Info
+    var info = document.createElement("div");
+    info.className = "m-info";
 
-    // Cleared / Uncollected Toggle Badge
-    var clearBadge = document.createElement("span");
-    clearBadge.className = "badge " + (m.cleared ? "cleared" : "uncleared");
-    clearBadge.textContent = m.cleared ? "🆑 Cleared" : "⏳ Pending";
-    clearBadge.title = "Tap to toggle collection status";
-    clearBadge.onclick = function(e){
-      e.stopPropagation();
-      m.cleared = !m.cleared;
-      saveData();
-      render();
-      toast(m.name + (m.cleared ? " marked as cleared (collected)" : " marked pending"));
-    };
-    infoDiv.appendChild(clearBadge);
+    var topLine = document.createElement("div");
+    topLine.className = "m-top-line";
+    var nameSpan = document.createElement("span");
+    nameSpan.className = "m-name";
+    nameSpan.textContent = m.name;
+    topLine.appendChild(nameSpan);
 
-    var title = document.createElement("span");
-    title.className = "m-title";
-    title.innerHTML = "<b>" + (idx + 1) + ". " + m.name + "</b>" + (m.date ? '<span class="m-date">(' + m.date + ')</span>' : "");
-    infoDiv.appendChild(title);
-    topRow.appendChild(infoDiv);
-
-    // Badges (Active / Future)
-    var badgesDiv = document.createElement("div");
-    badgesDiv.className = "m-badges";
-    if(idx === activeIdx){
-      var actBadge = document.createElement("span");
-      actBadge.className = "badge collecting";
-      actBadge.textContent = "🎯 Turn";
-      badgesDiv.appendChild(actBadge);
+    if(m.date){
+      var dateSpan = document.createElement("span");
+      dateSpan.className = "m-date";
+      dateSpan.textContent = "(" + m.date + ")";
+      topLine.appendChild(dateSpan);
     }
+
     if(m.checks >= 10){
-      var futBadge = document.createElement("span");
-      futBadge.className = "badge future";
-      futBadge.textContent = "🚀 Paid Future";
-      badgesDiv.appendChild(futBadge);
+      var futTag = document.createElement("span");
+      futTag.className = "m-tag future";
+      futTag.textContent = "Future Paid";
+      topLine.appendChild(futTag);
+    } else if(idx === activeIdx){
+      var turnTag = document.createElement("span");
+      turnTag.className = "m-tag turn";
+      turnTag.textContent = "Turn";
+      topLine.appendChild(turnTag);
     }
-    topRow.appendChild(badgesDiv);
-    card.appendChild(topRow);
+    info.appendChild(topLine);
 
-    // Mid Row: Checks Display
-    var checksWrap = document.createElement("div");
-    checksWrap.className = "m-checks-wrap";
+    // Bottom line: 10 Micro Dots + Count
+    var botLine = document.createElement("div");
+    botLine.className = "m-bot-line";
 
-    var checksStr = document.createElement("div");
-    checksStr.className = "m-checks-str";
-    checksStr.textContent = m.checks > 0 ? "✅".repeat(m.checks) : "No payments logged";
-    checksWrap.appendChild(checksStr);
+    var dotsWrap = document.createElement("div");
+    dotsWrap.className = "m-dots";
+    var maxDots = S.cycleDays || 10;
+    for(var d = 0; d < maxDots; d++){
+      var dot = document.createElement("div");
+      dot.className = "dot" + (d < m.checks ? (m.checks >= 10 ? " gold" : " filled") : "");
+      dotsWrap.appendChild(dot);
+    }
+    botLine.appendChild(dotsWrap);
 
-    var checksCount = document.createElement("div");
-    checksCount.className = "m-checks-count";
-    checksCount.textContent = m.checks + " / " + (S.cycleDays || 10);
-    checksWrap.appendChild(checksCount);
-    card.appendChild(checksWrap);
+    var countText = document.createElement("span");
+    countText.className = "m-count-text";
+    countText.textContent = m.checks + "/10";
+    botLine.appendChild(countText);
 
-    // Controls Row
-    var controls = document.createElement("div");
-    controls.className = "m-controls";
+    info.appendChild(botLine);
+    row.appendChild(info);
 
-    var btnMinus = document.createElement("button");
-    btnMinus.className = "btn-step sec";
-    btnMinus.textContent = "−";
-    btnMinus.title = "Remove 1 check";
-    btnMinus.onclick = function(){
-      if(m.checks > 0){
-        m.checks--;
-        saveData();
-        render();
-        toast("Removed 1 check for " + m.name + " (" + m.checks + " remaining)");
-      }
-    };
-
+    // Quick +1 Button
     var btnPlus = document.createElement("button");
-    btnPlus.className = "btn-step p";
-    btnPlus.textContent = "+";
-    btnPlus.title = "Add 1 check";
-    btnPlus.onclick = function(){
+    btnPlus.className = "btn-plus" + (m.checks >= 10 ? " done" : "");
+    btnPlus.textContent = m.checks >= 10 ? "✓" : "+";
+    btnPlus.title = "Add 1 payment";
+    btnPlus.onclick = function(e){
+      e.stopPropagation();
       m.checks++;
       saveData();
       render();
-      toast("Added check for " + m.name + " (" + m.checks + " checks total)");
+      toast("+1 payment for " + m.name + " (" + m.checks + "/10)");
+    };
+    row.appendChild(btnPlus);
+
+    // Clicking anywhere on row opens the Bottom Sheet
+    row.onclick = function(){
+      openMemberSheet(idx);
     };
 
-    var btnLog = document.createElement("button");
-    btnLog.className = "btn-log sec";
-    btnLog.textContent = "🧾 Log Alert";
-    btnLog.onclick = function(){
-      openLogModal(idx);
-    };
-
-    controls.appendChild(btnMinus);
-    controls.appendChild(btnPlus);
-    controls.appendChild(btnLog);
-    card.appendChild(controls);
-
-    listEl.appendChild(card);
+    listEl.appendChild(row);
   });
 }
 
-// --- Quick Payment Logger Modal ---
-function openLogModal(memberIdx){
-  var sel = $("logMemberSelect");
-  sel.innerHTML = "";
-  S.members.forEach(function(m, i){
-    var opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = (i + 1) + ". " + m.name + (m.date ? " (" + m.date + ")" : "") + " [" + m.checks + " checks]";
-    if(i === memberIdx) opt.selected = true;
-    sel.appendChild(opt);
-  });
+// --- Member Sheet Controls ---
+function openMemberSheet(idx){
+  activeMemberIdx = idx;
+  var m = S.members[idx];
+  if(!m) return;
 
-  var target = S.members[memberIdx] || S.members[0];
-  $("logPayerName").value = target ? target.name : "";
-  $("logBank").value = "OPay";
-  $("logAccount").value = "";
-  $("logNote").value = "Payment for number " + (memberIdx + 1) + " day " + ((target ? target.checks : 0) + 1);
+  $("sheetMemberName").textContent = (idx + 1) + ". " + m.name;
+  $("sheetMemberSub").textContent = "Payout Date: " + (m.date || "Not set") + " • " + (m.cleared ? "Cleared" : "Pending");
+  $("sheetCheckNum").textContent = m.checks;
+  
+  if(m.cleared){
+    $("sheetClearedSwitch").classList.add("on");
+  } else {
+    $("sheetClearedSwitch").classList.remove("on");
+  }
 
-  $("logModal").classList.remove("hide");
+  $("sheetPayerName").value = m.name;
+  $("sheetBank").value = "OPay";
+  $("memberSheet").classList.remove("hide");
 }
 
-$("modalClose").onclick = function(){
-  $("logModal").classList.add("hide");
+$("sheetClose").onclick = function(){
+  $("memberSheet").classList.add("hide");
 };
 
-$("saveLogBtn").onclick = function(){
-  var idx = parseInt($("logMemberSelect").value) || 0;
-  var target = S.members[idx];
-  if(!target) return;
+$("sheetMinus").onclick = function(){
+  var m = S.members[activeMemberIdx];
+  if(m && m.checks > 0){
+    m.checks--;
+    $("sheetCheckNum").textContent = m.checks;
+    saveData();
+    render();
+  }
+};
 
-  var payer = $("logPayerName").value.trim() || target.name;
-  var bank = $("logBank").value.trim() || "Bank";
-  var acct = $("logAccount").value.trim();
-  var note = $("logNote").value.trim();
+$("sheetPlus").onclick = function(){
+  var m = S.members[activeMemberIdx];
+  if(m){
+    m.checks++;
+    $("sheetCheckNum").textContent = m.checks;
+    saveData();
+    render();
+  }
+};
 
-  target.checks++;
-  S.payments.push({
-    time: new Date().toISOString(),
-    payer: payer,
-    bank: bank,
-    account: acct,
-    memberIdx: idx,
-    note: note
-  });
+$("sheetClearedSwitch").onclick = function(){
+  var m = S.members[activeMemberIdx];
+  if(m){
+    m.cleared = !m.cleared;
+    if(m.cleared) $("sheetClearedSwitch").classList.add("on");
+    else $("sheetClearedSwitch").classList.remove("on");
+    $("sheetMemberSub").textContent = "Payout Date: " + (m.date || "Not set") + " • " + (m.cleared ? "Cleared" : "Pending");
+    saveData();
+    render();
+    toast(m.name + (m.cleared ? " marked as cleared" : " marked pending"));
+  }
+};
 
-  saveData();
-  render();
-  $("logModal").classList.add("hide");
+$("sheetCopyReceiptBtn").onclick = function(){
+  var m = S.members[activeMemberIdx];
+  if(!m) return;
+  var payer = $("sheetPayerName").value.trim() || m.name;
+  var bank = $("sheetBank").value.trim() || "OPay";
 
   var receipt = [
     "*PAYMENT CONFIRMATION* 🧾✅",
     "Name: " + payer,
     "Bank: " + bank,
-    (acct ? "Account: " + acct : ""),
-    "Purpose: " + (note || ("Payment for #" + (idx + 1))),
-    "Total checks for " + target.name + ": " + target.checks + " ✅"
-  ].filter(Boolean).join("\n");
+    "Purpose: Payment for #" + (activeMemberIdx + 1) + " (" + m.name + ")",
+    "Total checks: " + m.checks + "/10 ✅"
+  ].join("\n");
 
-  copyText(receipt, "Payment saved (+1 check) & receipt copied to clipboard!");
-};
-
-$("copyReceiptBtn").onclick = function(){
-  var idx = parseInt($("logMemberSelect").value) || 0;
-  var target = S.members[idx];
-  var payer = $("logPayerName").value.trim() || (target ? target.name : "");
-  var bank = $("logBank").value.trim() || "Bank";
-  var acct = $("logAccount").value.trim();
-  var note = $("logNote").value.trim();
-
-  var receipt = [
-    "*PAYMENT CONFIRMATION* 🧾✅",
-    "Name: " + payer,
-    "Bank: " + bank,
-    (acct ? "Account: " + acct : ""),
-    "Purpose: " + note
-  ].filter(Boolean).join("\n");
-
-  copyText(receipt, "Receipt copied to clipboard");
-};
-
-$("quickLogBtn").onclick = function(){
-  openLogModal(S.round || 0);
+  copyText(receipt, "Receipt copied to clipboard!");
 };
 
 // WhatsApp Buttons
 $("copyRosterBtn").onclick = function(){
-  copyText(buildWhatsAppFullUpdate(), "WhatsApp roster update copied!");
+  copyText(buildWhatsAppRoster(), "WhatsApp roster copied to clipboard!");
 };
 
 $("waRosterBtn").onclick = function(){
-  window.open("https://wa.me/?text=" + encodeURIComponent(buildWhatsAppFullUpdate()), "_blank");
+  window.open("https://wa.me/?text=" + encodeURIComponent(buildWhatsAppRoster()), "_blank");
 };
 
 // Round Navigation
@@ -910,12 +1001,12 @@ function openAuth(mode){
 
   if(mode === "unlock"){
     $("authTitle").textContent = "Enter Passcode";
-    $("authDesc").textContent = "Enter your 4-digit PIN to access " + (S.group || "Ajo Tracker");
+    $("authDesc").textContent = "Enter 4-digit PIN to access " + (S.group || "Ajo Tracker");
     $("authForgotBtn").classList.remove("hide");
     $("authCancelSetupBtn").classList.add("hide");
   } else if(mode === "setup_new" || mode === "change_new"){
     $("authTitle").textContent = "Create 4-Digit PIN";
-    $("authDesc").textContent = "Choose a secure 4-digit PIN you will remember";
+    $("authDesc").textContent = "Choose a secure 4-digit PIN";
     $("authForgotBtn").classList.add("hide");
     $("authCancelSetupBtn").classList.remove("hide");
   } else if(mode === "setup_confirm" || mode === "change_confirm"){
@@ -930,7 +1021,7 @@ function openAuth(mode){
     $("authCancelSetupBtn").classList.remove("hide");
   } else if(mode === "verify_change"){
     $("authTitle").textContent = "Verify Current PIN";
-    $("authDesc").textContent = "Enter your existing PIN before setting a new one";
+    $("authDesc").textContent = "Enter your current PIN before changing";
     $("authForgotBtn").classList.remove("hide");
     $("authCancelSetupBtn").classList.remove("hide");
   }
@@ -1132,11 +1223,9 @@ $("bannerDismiss").onclick = function(){
   $("pinBanner").classList.add("hide");
 };
 
-// --- Settings Form ---
+// Settings Form
 $("setBtn").onclick = function(){
   $("sg").value = S.group;
-  $("sa").value = S.amount || "";
-  $("sf").value = S.freq;
   $("sm").value = buildWhatsAppRoster();
   $("sr").value = (S.round || 0) + 1;
   $("main").classList.add("hide");
@@ -1154,8 +1243,6 @@ $("save").onclick = function(){
   if(!rawLines.length){ toast("Add at least one member"); return; }
   
   S.group = $("sg").value.trim();
-  S.amount = Number($("sa").value) || 0;
-  S.freq = $("sf").value.trim() || "10-Days";
   S.members = normalizeMembers(rawLines);
   S.round = Math.max(0, (parseInt($("sr").value) || 1) - 1);
   
@@ -1163,7 +1250,7 @@ $("save").onclick = function(){
   $("set").classList.add("hide");
   $("main").classList.remove("hide");
   render();
-  toast("Settings saved!");
+  toast("Roster saved!");
 };
 
 $("bk").onclick = function(){
@@ -1199,7 +1286,7 @@ $("reset").onclick = function(){
   }
 };
 
-// --- PWA Installation ---
+// PWA Install
 var deferredInstallPrompt = null;
 window.addEventListener("beforeinstallprompt", function(e){
   e.preventDefault();
