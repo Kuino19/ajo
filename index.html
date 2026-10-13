@@ -216,6 +216,16 @@ button.btn-act.primary:active{background:var(--pri-hover)}
 }
 .m-tag.future{background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-bd)}
 .m-tag.turn{background: var(--pri-light); color: var(--pri); border: 1px solid var(--pri-border)}
+.m-tag.uptodate{background: var(--pri-light); color: var(--pri); border: 1px solid var(--pri-border)}
+.m-tag.due{background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-bd)}
+.m-tag.owing{background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5}
+.btn-micro{
+  width: 22px; height: 22px; border-radius: 6px;
+  background: var(--bg); border: 1px solid var(--bd);
+  color: var(--tx); font-size: 10px; display: inline-flex;
+  align-items: center; justify-content: center; cursor: pointer;
+}
+.btn-micro:active{background: var(--pri); color: #fff}
 
 /* Quick +1 Button */
 .btn-plus{
@@ -403,12 +413,17 @@ label{font-size:13px;color:var(--mut);font-weight:500}
     <!-- Hero Round Card -->
     <div class="hero-card">
       <div class="round-nav">
-        <button class="nav-arrow" id="prev">&larr;</button>
+        <button class="nav-arrow" id="prev" title="Previous Round">&larr;</button>
         <div class="round-center">
           <div class="round-title" id="rl">Round 3</div>
           <div class="round-collector" id="col">Collector: Moyin (20/10)</div>
+          <div style="display:flex;justify-content:center;align-items:center;gap:6px;margin-top:6px">
+            <button class="btn-micro" id="prevDayBtn" title="Previous Day">◀</button>
+            <span id="dayBadge" style="font-size:11px;font-weight:700;background:var(--bg);border:1px solid var(--bd);padding:2px 8px;border-radius:10px;color:var(--tx)">Day 3 of 10</span>
+            <button class="btn-micro" id="nextDayBtn" title="Next Day">▶</button>
+          </div>
         </div>
-        <button class="nav-arrow" id="next">&rarr;</button>
+        <button class="nav-arrow" id="next" title="Next Round">&rarr;</button>
       </div>
 
       <div class="progress-bar-wrap">
@@ -578,6 +593,7 @@ var defaultState = {
   freq: "10-Days (1k for 100k)",
   cycleDays: 10,
   round: 2, // Moyin (slot 3, 0-indexed)
+  day: 3,   // Day 3 of 10
   members: defaultRoster
 };
 
@@ -768,10 +784,14 @@ function render(){
   // Active round collector
   var activeIdx = Math.max(0, Math.min(S.round, n - 1));
   var cur = S.members[activeIdx];
+  var currentDay = Math.max(1, Math.min(S.day || 3, 10));
   $("rl").textContent = "Round " + (activeIdx + 1);
   $("col").textContent = "Collector: " + (cur ? cur.name + (cur.date ? " (" + cur.date + ")" : "") : "-");
+  $("dayBadge").textContent = "Day " + currentDay + " of 10";
   $("prev").disabled = activeIdx === 0;
   $("next").disabled = activeIdx >= n - 1;
+  $("prevDayBtn").disabled = currentDay <= 1;
+  $("nextDayBtn").disabled = currentDay >= 10;
 
   // Stats
   var totalChecks = 0;
@@ -835,6 +855,17 @@ function render(){
       turnTag.className = "m-tag turn";
       turnTag.textContent = "Turn";
       topLine.appendChild(turnTag);
+    } else if(m.checks >= currentDay){
+      var okTag = document.createElement("span");
+      okTag.className = "m-tag uptodate";
+      okTag.textContent = "Day " + currentDay + " Paid";
+      topLine.appendChild(okTag);
+    } else {
+      var oweDays = currentDay - m.checks;
+      var oweTag = document.createElement("span");
+      oweTag.className = "m-tag " + (oweDays > 1 ? "owing" : "due");
+      oweTag.textContent = "Owes ₦" + Number(oweDays * 1000).toLocaleString("en-NG");
+      topLine.appendChild(oweTag);
     }
     info.appendChild(topLine);
 
@@ -978,6 +1009,26 @@ $("prev").onclick = function(){
 };
 $("next").onclick = function(){
   if(S.round < S.members.length - 1){ S.round++; saveData(); render(); }
+};
+
+// Day Navigation
+$("prevDayBtn").onclick = function(){
+  var d = S.day || 3;
+  if(d > 1){
+    S.day = d - 1;
+    saveData();
+    render();
+    toast("Moved to Day " + S.day);
+  }
+};
+$("nextDayBtn").onclick = function(){
+  var d = S.day || 3;
+  if(d < (S.cycleDays || 10)){
+    S.day = d + 1;
+    saveData();
+    render();
+    toast("Moved to Day " + S.day);
+  }
 };
 
 // --- Auth Lock Screen Functions ---
