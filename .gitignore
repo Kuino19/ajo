@@ -1,0 +1,16 @@
+# Ignore everything by default
+/*
+
+# Explicitly track only the Ajo Tracker PWA files
+!index.html
+!manifest.json
+!sw.js
+!favicon.svg
+!favicon.ico
+!icon-192.png
+!icon-512.png
+!icon-maskable-192.png
+!icon-maskable-512.png
+!apple-touch-icon.png
+!README.md
+!.gitignore

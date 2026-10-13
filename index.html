@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ajo Tracker</title>
+
+<!-- PWA & Mobile Web Meta Tags -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f7b4a" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121815" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Ajo Tracker">
+<meta name="application-name" content="Ajo Tracker">
+<meta name="description" content="Track thrift contributions, rotating savings, and Ajo rounds seamlessly offline.">
+
+<!-- Icons -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+
+<style>
+:root{
+  --bg:#f6f7f4;
+  --card:#fff;
+  --tx:#1b2a22;
+  --mut:#6b7a72;
+  --pri:#0f7b4a;
+  --priTx:#fff;
+  --priHover:#0c643c;
+  --ok:#e3f4ea;
+  --warn:#fff4dc;
+  --bd:#dfe5e0;
+  --err:#c53030;
+  --errBg:#fee2e2;
+  --gold:#d97706;
+  --keypadBg:#f0f2ef;
+  --keypadActive:#e2e6e2;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121815;
+    --card:#1b2420;
+    --tx:#eaf1ec;
+    --mut:#9aaba1;
+    --pri:#2fb575;
+    --priTx:#07140d;
+    --priHover:#269e65;
+    --ok:#18352a;
+    --warn:#3a321a;
+    --bd:#2b3832;
+    --err:#f87171;
+    --errBg:#3b1c1c;
+    --gold:#fbbf24;
+    --keypadBg:#24302a;
+    --keypadActive:#2f3f37;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121815;
+  --card:#1b2420;
+  --tx:#eaf1ec;
+  --mut:#9aaba1;
+  --pri:#2fb575;
+  --priTx:#07140d;
+  --priHover:#269e65;
+  --ok:#18352a;
+  --warn:#3a321a;
+  --bd:#2b3832;
+  --err:#f87171;
+  --errBg:#3b1c1c;
+  --gold:#fbbf24;
+  --keypadBg:#24302a;
+  --keypadActive:#2f3f37;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;user-select:none}
+.w{max-width:520px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:0;display:flex;align-items:center;gap:8px}
+.app-brand{display:flex;align-items:center;gap:8px}
+.app-logo{width:28px;height:28px;border-radius:7px;vertical-align:middle}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+.top-actions{display:flex;gap:6px;align-items:center}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
+.rd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rd b{font-size:18px}
+.sm{color:var(--mut);font-size:14px}
+button{font:inherit;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:10px 14px;cursor:pointer;transition:background .15s,transform .08s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+button:active:not(:disabled){transform:scale(.98)}
+button.p{background:var(--pri);color:var(--priTx);border-color:var(--pri);font-weight:600}
+button.p:hover{background:var(--priHover)}
+button.sec{background:transparent;border-color:var(--bd);color:var(--tx)}
+button.danger{color:var(--err);border-color:var(--err)}
+button.sm-btn{padding:6px 10px;font-size:13px;border-radius:8px}
+button:disabled{opacity:.4;cursor:default}
+.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:10px 0 4px}
+.bar i{display:block;height:100%;background:var(--pri);width:0;transition:width .25s ease}
+.m{display:flex;align-items:center;gap:10px;width:100%;text-align:left;margin-bottom:8px;padding:14px;background:var(--warn);border:1px solid transparent;border-radius:12px;cursor:pointer}
+.m.paid{background:var(--ok)}
+.m .ic{font-size:20px;width:26px}
+.m .nm{flex:1;font-weight:500}
+.m .tag{font-size:12px;color:var(--mut);background:rgba(0,0,0,0.05);padding:2px 8px;border-radius:12px}
+.row{display:flex;gap:8px}
+.row>button{flex:1}
+input,textarea,select{width:100%;font:inherit;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);margin:4px 0 10px;user-select:text}
+textarea{min-height:140px}
+label{font-size:14px;color:var(--mut);font-weight:500}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:24px;font-size:14px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2);opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:9999}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(-2px)}
+.hide{display:none !important}
+
+/* Auth / Lock Screen Styles */
+.auth-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;text-align:center;padding:20px 10px}
+.auth-shield{width:64px;height:64px;background:var(--ok);color:var(--pri);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;box-shadow:0 2px 8px rgba(15,123,74,0.15)}
+.auth-title{font-size:22px;font-weight:700;margin:0 0 6px}
+.auth-desc{color:var(--mut);font-size:14px;max-width:280px;margin:0 auto 24px}
+.pin-dots{display:flex;justify-content:center;gap:16px;margin:16px 0 28px}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--bd);background:transparent;transition:all .15s cubic-bezier(0.4, 0, 0.2, 1)}
+.pin-dot.filled{background:var(--pri);border-color:var(--pri);transform:scale(1.15)}
+.pin-dot.err{background:var(--err);border-color:var(--err)}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:290px;margin:0 auto}
+.keypad button{height:60px;font-size:22px;font-weight:600;border-radius:18px;background:var(--keypadBg);border:1px solid transparent;color:var(--tx);transition:background .1s,transform .08s}
+.keypad button:active{background:var(--keypadActive);transform:scale(.95)}
+.keypad button.key-action{font-size:16px;font-weight:500;color:var(--mut)}
+.auth-sublink{margin-top:20px;background:none;border:none;color:var(--mut);font-size:14px;cursor:pointer;padding:8px 12px;text-decoration:underline}
+.auth-sublink:hover{color:var(--tx)}
+.hidden-pin-input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%,60%{transform:translateX(-10px)}
+  40%,80%{transform:translateX(10px)}
+}
+.shake{animation:shake .32s ease-in-out}
+
+/* Security Badge & Promo Banner */
+.banner{background:var(--ok);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.banner-tx{font-size:13px;color:var(--tx)}
+.banner-tx b{display:block;font-size:14px;margin-bottom:2px}
+.banner-actions{display:flex;gap:6px}
+.badge{display:inline-block;padding:3px 8px;font-size:12px;font-weight:600;border-radius:12px;background:var(--ok);color:var(--pri)}
+.badge.off{background:rgba(0,0,0,0.06);color:var(--mut)}
+.security-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}
+.security-row:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<div class="w">
+  <!-- Top Navigation Bar -->
+  <div class="top">
+    <div class="app-brand">
+      <img src="favicon.svg" alt="Ajo Logo" class="app-logo">
+      <h1 id="gt">Ajo Tracker</h1>
+    </div>
+    <div class="top-actions">
+      <button id="pwaInstall" class="sm-btn hide" title="Install App on Device">⬇ Install</button>
+      <button id="lockBtn" class="sm-btn hide" title="Lock App with PIN">🔒 Lock</button>
+      <button id="setBtn" class="sm-btn">Settings</button>
+    </div>
+  </div>
+
+  <!-- Optional First-Time PIN Setup Banner -->
+  <div id="pinBanner" class="banner hide">
+    <div class="banner-tx">
+      <b>🔒 Protect with PIN</b>
+      Keep your Ajo records private with a 4-digit passcode.
+    </div>
+    <div class="banner-actions">
+      <button id="bannerSetPin" class="p sm-btn">Set PIN</button>
+      <button id="bannerDismiss" class="sm-btn sec">Later</button>
+    </div>
+  </div>
+
+  <!-- AUTH LOCK SCREEN VIEW -->
+  <div id="authView" class="hide">
+    <div class="auth-wrap card">
+      <div class="auth-shield" id="authIcon">🔒</div>
+      <h2 class="auth-title" id="authTitle">Enter Passcode</h2>
+      <p class="auth-desc" id="authDesc">Enter your 4-digit PIN to access your Ajo records</p>
+      
+      <!-- 4 PIN Dots -->
+      <div class="pin-dots" id="pinDots">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- Native hidden input for hardware keyboard support -->
+      <input type="password" id="hiddenPin" class="hidden-pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off">
+
+      <!-- Touch Keypad -->
+      <div class="keypad">
+        <button type="button" class="num-key" data-k="1">1</button>
+        <button type="button" class="num-key" data-k="2">2</button>
+        <button type="button" class="num-key" data-k="3">3</button>
+        <button type="button" class="num-key" data-k="4">4</button>
+        <button type="button" class="num-key" data-k="5">5</button>
+        <button type="button" class="num-key" data-k="6">6</button>
+        <button type="button" class="num-key" data-k="7">7</button>
+        <button type="button" class="num-key" data-k="8">8</button>
+        <button type="button" class="num-key" data-k="9">9</button>
+        <button type="button" class="key-action" id="keyClear">Clear</button>
+        <button type="button" class="num-key" data-k="0">0</button>
+        <button type="button" class="key-action" id="keyBack">⌫</button>
+      </div>
+
+      <button type="button" class="auth-sublink" id="authForgotBtn">Forgot PIN?</button>
+      <button type="button" class="auth-sublink hide" id="authCancelSetupBtn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- MAIN AJO TRACKER INTERFACE -->
+  <div id="main">
+    <div class="card">
+      <div class="rd">
+        <button id="prev">&larr;</button>
+        <div style="text-align:center"><b id="rl"></b><div class="sm" id="col"></div></div>
+        <button id="next">&rarr;</button>
+      </div>
+      <div class="bar"><i id="pb"></i></div>
+      <div class="sm" id="pt"></div>
+    </div>
+    <div id="list"></div>
+    <div class="row">
+      <button class="p" id="copy">Copy WhatsApp update</button>
+      <button class="p" id="wa">Send to WhatsApp</button>
+    </div>
+    <p class="sm" style="margin-top:12px">Tap a name to mark paid or unpaid. Then copy or send the update once.</p>
+  </div>
+
+  <!-- SETTINGS VIEW -->
+  <div id="set" class="hide">
+    <!-- Security & PIN Management Card -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <b>Security &amp; Auth</b>
+        <span id="secBadge" class="badge">PIN Off</span>
+      </div>
+      <p class="sm" style="margin:0 0 10px">Secure this device with a 4-digit PIN so others cannot modify or view contributions without authorization.</p>
+      
+      <div id="pinActions">
+        <div class="row" id="pinNotSetRow">
+          <button class="p" id="btnEnablePin">Set Up 4-Digit PIN</button>
+        </div>
+        <div class="row hide" id="pinSetRow">
+          <button id="btnChangePin">Change PIN</button>
+          <button class="danger" id="btnDisablePin">Disable PIN</button>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)" id="recoveryRow" class="hide">
+        <label>Security Word (for PIN recovery)</label>
+        <input id="secClue" placeholder="e.g. your favorite market or nickname">
+        <button class="sm-btn sec" id="saveRecoveryBtn">Save Security Word</button>
+      </div>
+    </div>
+
+    <!-- Group Configuration Card -->
+    <div class="card">
+      <label>Group name</label><input id="sg" placeholder="e.g. Mama Tunde Ajo">
+      <label>Amount per person per round (&#8358;)</label><input id="sa" type="number" inputmode="numeric" placeholder="10000">
+      <label>How often</label>
+      <select id="sf"><option>Week</option><option>Month</option><option>Day</option></select>
+      <label>Members, one per line, in the order they collect. Put people who already collected at the top.</label>
+      <textarea id="sm" placeholder="Ngozi&#10;Bisi&#10;Tunde"></textarea>
+      <label>Which round are you on now? (if 3 people have already collected, this is round 4)</label>
+      <input id="sr" type="number" inputmode="numeric" min="1" placeholder="1">
+      <div class="row"><button class="p" id="save">Save</button><button id="cancel">Cancel</button></div>
+    </div>
+
+    <!-- Backup & Restore Card -->
+    <div class="card">
+      <b>Backup &amp; Offline Storage</b>
+      <p class="sm">Data lives on this device. Copy a backup now and then, and paste it back to restore on another phone.</p>
+      <div class="row"><button id="bk">Copy backup</button><button id="rs">Restore</button></div>
+      <textarea id="bkt" class="hide" placeholder="Paste backup here, then tap Restore again"></textarea>
+    </div>
+
+    <!-- Reset Card -->
+    <div class="card">
+      <button id="reset" class="danger" style="width:100%">Start a new Ajo (clears everything)</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+// Storage Keys
+var KEY = "ajo-tracker-v1";
+var KEY_AUTH = "ajo-auth-v1";
+
+// State
+var defaultState = {
+  group: "Ajo Contribution Group",
+  amount: 5000,
+  freq: "Round",
+  members: [
+    "Deborah (30/9)",
+    "Akinde (10/10)",
+    "Moyin (20/10)",
+    "Deborah (30/10)",
+    "Francis (10/11)",
+    "Taiwo (20/11)",
+    "Igwe (30/11)",
+    "Tolu (10/12)",
+    "Korede (20/12)",
+    "Ojeola (30/12)"
+  ],
+  round: 2,
+  paid: { "2": [0, 1] }
+};
+var S = JSON.parse(JSON.stringify(defaultState));
+var AUTH = { enabled:false, pinHash:"", salt:"", recoveryClue:"", recoveryHash:"", bannerDismissed:false };
+
+// Auth runtime state
+var enteredPin = "";
+var authMode = "unlock"; // "unlock" | "setup_new" | "setup_confirm" | "verify_disable" | "verify_change"
+var tempNewPin = "";
+
+function $(i){ return document.getElementById(i); }
+function naira(n){ return "\u20A6" + Number(n||0).toLocaleString("en-NG"); }
+function toast(t){ var e = $("toast"); e.textContent = t; e.className = "on"; setTimeout(function(){ e.className = ""; }, 2000); }
+
+// --- Hashing & Crypto ---
+function generateSalt(){
+  var arr = new Uint8Array(8);
+  if(window.crypto && crypto.getRandomValues){ crypto.getRandomValues(arr); }
+  else { for(var i=0; i<8; i++) arr[i] = Math.floor(Math.random()*256); }
+  return Array.from(arr).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+}
+
+async function hashStr(str, salt){
+  var payload = (salt || "") + ":" + str;
+  if(window.crypto && crypto.subtle){
+    try {
+      var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(payload));
+      return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+    } catch(e){}
+  }
+  // Fast deterministic fallback if subtle crypto is unavailable
+  var h = 0x811c9dc5;
+  for (var i = 0; i < payload.length; i++) {
+    h ^= payload.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return "fb_" + (h >>> 0).toString(16);
+}
+
+// --- Load & Save Data ---
+function loadData(){
+  try {
+    var r = localStorage.getItem(KEY);
+    if(r){
+      var parsed = JSON.parse(r);
+      if(parsed && parsed.members && parsed.members.length){
+        S = Object.assign(S, parsed);
+      }
+    }
+  } catch(e){}
+}
+
+function saveData(){
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){}
+}
+
+function loadAuth(){
+  try {
+    var a = localStorage.getItem(KEY_AUTH);
+    if(a){ AUTH = Object.assign(AUTH, JSON.parse(a)); }
+  } catch(e){}
+}
+
+function saveAuth(){
+  try { localStorage.setItem(KEY_AUTH, JSON.stringify(AUTH)); } catch(e){}
+}
+
+function isSessionUnlocked(){
+  return sessionStorage.getItem("ajo_unlocked") === "1";
+}
+
+function setSessionUnlocked(val){
+  if(val){ sessionStorage.setItem("ajo_unlocked", "1"); }
+  else { sessionStorage.removeItem("ajo_unlocked"); }
+}
+
+// --- Main App Logic ---
+function paidSet(){ return S.paid[S.round] || []; }
+
+function msg(){
+  var ps = paidSet(), n = S.members.length;
+  var L = ["*" + (S.group || "Ajo") + " - " + S.freq + " " + (S.round + 1) + "*"];
+  L.push("Collector: " + (S.members[S.round % Math.max(n, 1)] || "-"));
+  L.push("Amount: " + naira(S.amount) + " each", "");
+  S.members.forEach(function(m, i){
+    L.push((ps.indexOf(i) > -1 ? "\u2705 " : "\u23F3 ") + m);
+  });
+  L.push("", "Paid: " + ps.length + "/" + n + " | Collected: " + naira(ps.length * S.amount));
+  return L.join("\n");
+}
+
+function render(){
+  var n = S.members.length;
+  $("gt").textContent = S.group || "Ajo Tracker";
+  
+  // Security lock button visibility
+  if(AUTH.enabled && isSessionUnlocked()){
+    $("lockBtn").classList.remove("hide");
+  } else {
+    $("lockBtn").classList.add("hide");
+  }
+
+  // Security badge in settings
+  if(AUTH.enabled){
+    $("secBadge").textContent = "PIN Active";
+    $("secBadge").className = "badge";
+    $("pinNotSetRow").classList.add("hide");
+    $("pinSetRow").classList.remove("hide");
+    $("recoveryRow").classList.remove("hide");
+    $("secClue").value = AUTH.recoveryClue || "";
+  } else {
+    $("secBadge").textContent = "PIN Off";
+    $("secBadge").className = "badge off";
+    $("pinNotSetRow").classList.remove("hide");
+    $("pinSetRow").classList.add("hide");
+    $("recoveryRow").classList.add("hide");
+  }
+
+  // First-time PIN setup suggestion banner
+  if(!AUTH.enabled && !AUTH.bannerDismissed && n > 0){
+    $("pinBanner").classList.remove("hide");
+  } else {
+    $("pinBanner").classList.add("hide");
+  }
+
+  // If no members, show settings
+  if(!n){
+    $("main").classList.add("hide");
+    $("set").classList.remove("hide");
+    return;
+  }
+
+  var ps = paidSet();
+  $("rl").textContent = S.freq + " " + (S.round + 1);
+  $("col").textContent = "Collector: " + S.members[S.round % n];
+  $("prev").disabled = S.round === 0;
+  $("pb").style.width = (ps.length / n * 100) + "%";
+  $("pt").textContent = ps.length + " of " + n + " paid | " + naira(ps.length * S.amount) + " of " + naira(n * S.amount);
+  
+  var h = $("list");
+  h.innerHTML = "";
+  S.members.forEach(function(m, i){
+    var p = ps.indexOf(i) > -1;
+    var b = document.createElement("button");
+    b.className = "m" + (p ? " paid" : "");
+    b.innerHTML = '<span class="ic">' + (p ? "\u2705" : "\u23F3") + '</span><span class="nm"></span><span class="tag">' +
+      (i === S.round % n ? "collecting" : ((S.round < n && i < S.round) || S.round >= n ? "collected" : "")) + '</span>';
+    b.querySelector(".nm").textContent = m;
+    b.onclick = function(){
+      var a = (S.paid[S.round] || []).slice();
+      var k = a.indexOf(i);
+      if(k > -1) a.splice(k, 1);
+      else a.push(i);
+      S.paid[S.round] = a;
+      saveData();
+      render();
+    };
+    h.appendChild(b);
+  });
+}
+
+function copyText(t, ok){
+  function fb(){
+    var a = document.createElement("textarea");
+    a.value = t;
+    document.body.appendChild(a);
+    a.select();
+    try { document.execCommand("copy"); toast(ok); } catch(e){ toast("Copy failed"); }
+    document.body.removeChild(a);
+  }
+  try {
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(function(){ toast(ok); }, fb);
+    } else { fb(); }
+  } catch(e){ fb(); }
+}
+
+// --- Auth PIN Logic ---
+function updateDots(err){
+  var dots = $("pinDots").children;
+  for(var i=0; i<4; i++){
+    dots[i].className = "pin-dot" + (i < enteredPin.length ? " filled" : "") + (err ? " err" : "");
+  }
+}
+
+function shakeDots(){
+  updateDots(true);
+  var box = $("pinDots");
+  box.classList.remove("shake");
+  void box.offsetWidth; // trigger reflow
+  box.classList.add("shake");
+  setTimeout(function(){
+    enteredPin = "";
+    updateDots(false);
+  }, 400);
+}
+
+function openAuth(mode){
+  authMode = mode;
+  enteredPin = "";
+  updateDots(false);
+  
+  $("main").classList.add("hide");
+  $("set").classList.add("hide");
+  $("pinBanner").classList.add("hide");
+  $("authView").classList.remove("hide");
+
+  if(mode === "unlock"){
+    $("authTitle").textContent = "Enter Passcode";
+    $("authDesc").textContent = "Enter your 4-digit PIN to access " + (S.group || "Ajo Tracker");
+    $("authForgotBtn").classList.remove("hide");
+    $("authCancelSetupBtn").classList.add("hide");
+  } else if(mode === "setup_new" || mode === "change_new"){
+    $("authTitle").textContent = "Create 4-Digit PIN";
+    $("authDesc").textContent = "Choose a secure 4-digit PIN you will remember";
+    $("authForgotBtn").classList.add("hide");
+    $("authCancelSetupBtn").classList.remove("hide");
+  } else if(mode === "setup_confirm" || mode === "change_confirm"){
+    $("authTitle").textContent = "Confirm Your PIN";
+    $("authDesc").textContent = "Re-enter the 4-digit PIN to confirm";
+    $("authForgotBtn").classList.add("hide");
+    $("authCancelSetupBtn").classList.remove("hide");
+  } else if(mode === "verify_disable"){
+    $("authTitle").textContent = "Confirm PIN to Disable";
+    $("authDesc").textContent = "Enter your current PIN to remove protection";
+    $("authForgotBtn").classList.remove("hide");
+    $("authCancelSetupBtn").classList.remove("hide");
+  } else if(mode === "verify_change"){
+    $("authTitle").textContent = "Verify Current PIN";
+    $("authDesc").textContent = "Enter your existing PIN before setting a new one";
+    $("authForgotBtn").classList.remove("hide");
+    $("authCancelSetupBtn").classList.remove("hide");
+  }
+
+  // Attempt focus on hidden input
+  try { $("hiddenPin").focus(); } catch(e){}
+}
+
+function closeAuth(unlocked){
+  $("authView").classList.add("hide");
+  enteredPin = "";
+  if(unlocked){
+    setSessionUnlocked(true);
+    $("main").classList.remove("hide");
+    render();
+  }
+}
+
+async function handlePinComplete(){
+  var pin = enteredPin;
+
+  if(authMode === "unlock"){
+    var h = await hashStr(pin, AUTH.salt);
+    if(h === AUTH.pinHash){
+      toast("Unlocked successfully");
+      closeAuth(true);
+    } else {
+      toast("Incorrect PIN");
+      shakeDots();
+    }
+  } 
+  else if(authMode === "setup_new" || authMode === "change_new"){
+    tempNewPin = pin;
+    openAuth(authMode === "setup_new" ? "setup_confirm" : "change_confirm");
+  } 
+  else if(authMode === "setup_confirm" || authMode === "change_confirm"){
+    if(pin === tempNewPin){
+      var salt = generateSalt();
+      var hash = await hashStr(pin, salt);
+      AUTH.enabled = true;
+      AUTH.salt = salt;
+      AUTH.pinHash = hash;
+      AUTH.bannerDismissed = true;
+      saveAuth();
+      setSessionUnlocked(true);
+      toast("4-Digit PIN enabled!");
+      closeAuth(true);
+    } else {
+      toast("PINs do not match. Start over.");
+      shakeDots();
+      setTimeout(function(){
+        openAuth(authMode === "setup_confirm" ? "setup_new" : "change_new");
+      }, 500);
+    }
+  } 
+  else if(authMode === "verify_disable"){
+    var h = await hashStr(pin, AUTH.salt);
+    if(h === AUTH.pinHash){
+      AUTH.enabled = false;
+      AUTH.pinHash = "";
+      AUTH.salt = "";
+      saveAuth();
+      setSessionUnlocked(false);
+      toast("PIN protection disabled");
+      closeAuth(true);
+      $("set").classList.remove("hide");
+      $("main").classList.add("hide");
+      render();
+    } else {
+      toast("Incorrect PIN");
+      shakeDots();
+    }
+  } 
+  else if(authMode === "verify_change"){
+    var h = await hashStr(pin, AUTH.salt);
+    if(h === AUTH.pinHash){
+      openAuth("change_new");
+    } else {
+      toast("Incorrect PIN");
+      shakeDots();
+    }
+  }
+}
+
+function handleKeyInput(char){
+  if(enteredPin.length < 4){
+    enteredPin += char;
+    updateDots(false);
+    if(enteredPin.length === 4){
+      setTimeout(handlePinComplete, 120);
+    }
+  }
+}
+
+function handleKeyBack(){
+  if(enteredPin.length > 0){
+    enteredPin = enteredPin.slice(0, -1);
+    updateDots(false);
+  }
+}
+
+function handleKeyClear(){
+  enteredPin = "";
+  updateDots(false);
+}
+
+// Attach Keypad Listeners
+document.querySelectorAll(".num-key").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    handleKeyInput(this.getAttribute("data-k"));
+  });
+});
+
+$("keyBack").onclick = handleKeyBack;
+$("keyClear").onclick = handleKeyClear;
+
+// Physical / On-screen native keyboard listener
+window.addEventListener("keydown", function(e){
+  if($("authView").classList.contains("hide")) return;
+  if(e.key >= "0" && e.key <= "9"){
+    handleKeyInput(e.key);
+  } else if(e.key === "Backspace"){
+    handleKeyBack();
+  } else if(e.key === "Escape"){
+    handleKeyClear();
+  }
+});
+
+// Forgot PIN / Recovery
+$("authForgotBtn").onclick = async function(){
+  var promptMsg = "PIN Recovery:\n";
+  if(AUTH.recoveryClue){
+    promptMsg += "Security Word: " + AUTH.recoveryClue + "\n\nEnter your recovery answer OR group name to reset PIN:";
+  } else if(S.group){
+    promptMsg += "Enter your exact Ajo group name ('" + S.group + "') to reset your PIN:";
+  } else {
+    promptMsg += "Type 'RESET' to clear PIN protection:";
+  }
+
+  var ans = prompt(promptMsg);
+  if(!ans) return;
+  ans = ans.trim();
+
+  var valid = false;
+  if(AUTH.recoveryHash){
+    var h = await hashStr(ans.toLowerCase(), AUTH.salt);
+    if(h === AUTH.recoveryHash) valid = true;
+  }
+  if(!valid && S.group && ans.toLowerCase() === S.group.toLowerCase()){
+    valid = true;
+  }
+  if(!valid && ans.toUpperCase() === "RESET"){
+    valid = true;
+  }
+
+  if(valid){
+    AUTH.enabled = false;
+    AUTH.pinHash = "";
+    AUTH.salt = "";
+    saveAuth();
+    setSessionUnlocked(false);
+    toast("PIN reset! You can now access your records.");
+    closeAuth(true);
+  } else {
+    toast("Recovery answer incorrect");
+  }
+};
+
+$("authCancelSetupBtn").onclick = function(){
+  if(AUTH.enabled && isSessionUnlocked()){
+    closeAuth(true);
+    $("set").classList.remove("hide");
+    $("main").classList.add("hide");
+  } else {
+    closeAuth(true);
+  }
+};
+
+// Top Bar Action Buttons
+$("lockBtn").onclick = function(){
+  setSessionUnlocked(false);
+  openAuth("unlock");
+  toast("App locked");
+};
+
+$("btnEnablePin").onclick = function(){
+  openAuth("setup_new");
+};
+
+$("btnChangePin").onclick = function(){
+  openAuth("verify_change");
+};
+
+$("btnDisablePin").onclick = function(){
+  openAuth("verify_disable");
+};
+
+$("saveRecoveryBtn").onclick = async function(){
+  var word = $("secClue").value.trim();
+  if(!word){ toast("Enter a security word"); return; }
+  AUTH.recoveryClue = word;
+  AUTH.recoveryHash = await hashStr(word.toLowerCase(), AUTH.salt);
+  saveAuth();
+  toast("Security word saved for recovery");
+};
+
+$("bannerSetPin").onclick = function(){
+  openAuth("setup_new");
+};
+
+$("bannerDismiss").onclick = function(){
+  AUTH.bannerDismissed = true;
+  saveAuth();
+  $("pinBanner").classList.add("hide");
+};
+
+// WhatsApp and Navigation
+$("copy").onclick = function(){ copyText(msg(), "Copied. Paste in WhatsApp"); };
+$("wa").onclick = function(){ window.open("https://wa.me/?text=" + encodeURIComponent(msg()), "_blank"); };
+$("prev").onclick = function(){ if(S.round > 0){ S.round--; saveData(); render(); } };
+$("next").onclick = function(){ S.round++; saveData(); render(); };
+
+$("setBtn").onclick = function(){
+  $("sg").value = S.group;
+  $("sa").value = S.amount || "";
+  $("sf").value = S.freq;
+  $("sm").value = S.members.join("\n");
+  $("sr").value = S.round + 1;
+  $("main").classList.add("hide");
+  $("set").classList.remove("hide");
+};
+
+$("cancel").onclick = function(){
+  $("set").classList.add("hide");
+  $("main").classList.remove("hide");
+  render();
+};
+
+$("save").onclick = function(){
+  var m = $("sm").value.split("\n").map(function(x){ return x.trim(); }).filter(Boolean);
+  if(!m.length){ toast("Add at least one member"); return; }
+  S.group = $("sg").value.trim();
+  S.amount = Number($("sa").value) || 0;
+  S.freq = $("sf").value;
+  if(m.length !== S.members.length) S.paid = {};
+  S.round = Math.max(1, parseInt($("sr").value) || 1) - 1;
+  S.members = m;
+  saveData();
+  $("set").classList.add("hide");
+  $("main").classList.remove("hide");
+  render();
+};
+
+$("bk").onclick = function(){
+  copyText(JSON.stringify(S), "Backup copied. Save it in WhatsApp or Notes");
+};
+
+$("rs").onclick = function(){
+  var t = $("bkt");
+  if(t.classList.contains("hide")){ t.classList.remove("hide"); return; }
+  try {
+    var d = JSON.parse(t.value);
+    if(!d.members) throw 0;
+    S = Object.assign(S, d);
+    saveData();
+    t.value = "";
+    t.classList.add("hide");
+    toast("Restored");
+    $("set").classList.add("hide");
+    $("main").classList.remove("hide");
+    render();
+  } catch(e){
+    toast("Invalid backup");
+  }
+};
+
+$("reset").onclick = function(){
+  if(confirm("Clear everything and start a new Ajo?")){
+    S = { group:"", amount:0, freq:"Week", members:[], round:0, paid:{} };
+    saveData();
+    $("sg").value = "";
+    $("sa").value = "";
+    $("sm").value = "";
+    render();
+  }
+};
+
+// --- PWA Installation Support ---
+var deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", function(e){
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  var btn = $("pwaInstall");
+  if(btn) btn.classList.remove("hide");
+});
+
+$("pwaInstall").onclick = function(){
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(function(choiceResult){
+    if(choiceResult.outcome === "accepted"){
+      toast("Installing Ajo Tracker...");
+      $("pwaInstall").classList.add("hide");
+    }
+    deferredInstallPrompt = null;
+  });
+};
+
+window.addEventListener("appinstalled", function(){
+  toast("Ajo Tracker installed to home screen!");
+  var btn = $("pwaInstall");
+  if(btn) btn.classList.add("hide");
+});
+
+// Register Service Worker for Offline PWA
+if("serviceWorker" in navigator){
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("./sw.js").then(function(reg){
+      // SW registered
+    }).catch(function(err){
+      console.warn("ServiceWorker registration failed:", err);
+    });
+  });
+}
+
+// --- App Bootstrap ---
+loadData();
+loadAuth();
+
+if(AUTH.enabled && !isSessionUnlocked()){
+  openAuth("unlock");
+} else {
+  render();
+}
+
+})();
+</script>
+</body>
+</html>
